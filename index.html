@@ -448,32 +448,80 @@ function updateButtons() {
   });
 }
 
-fetch('./homeworks.json')
-  .then(response => response.json())
-  .then(homeworks => {
+<script>
+function loadHomeworks(homeworks) {
+  allHomeworks = homeworks.map(hw => ({
+    ...hw,
+    status: getStatus(hw)
+  }));
 
-    allHomeworks = homeworks.map(hw => ({
-      ...hw,
-      status: getStatus(hw)
-    }));
+  updateButtons();
+  render('todo');
+}
 
+
+// ① 檢查是不是剛從新藝學園同步回來
+const params = new URLSearchParams(window.location.search);
+const syncData = params.get('sync');
+
+if (syncData) {
+  try {
+    const homeworks = JSON.parse(decodeURIComponent(syncData));
+
+    // 存在這位使用者自己的瀏覽器
+    localStorage.setItem(
+      'tnuaHomeworks',
+      JSON.stringify(homeworks)
+    );
+
+    // 記錄同步時間
+    localStorage.setItem(
+      'tnuaLastSync',
+      new Date().toISOString()
+    );
+
+    // 把網址上的 ?sync=... 清掉
+    window.history.replaceState(
+      {},
+      '',
+      window.location.pathname
+    );
+
+    loadHomeworks(homeworks);
+
+  } catch (error) {
+    console.error('同步資料解析失敗：', error);
+  }
+
+} else {
+
+  // ② 沒有新同步資料，就讀取這台電腦之前同步的資料
+  const saved = localStorage.getItem('tnuaHomeworks');
+
+  if (saved) {
+    try {
+      loadHomeworks(JSON.parse(saved));
+    } catch (error) {
+      console.error('本機資料讀取失敗：', error);
+    }
+
+  } else {
+
+    // ③ 第一次使用，還沒有任何作業資料
+    allHomeworks = [];
     updateButtons();
-
-    render('todo');
-  })
-  .catch(error => {
-    console.error(error);
 
     document.getElementById('homework-list').innerHTML = `
       <div style="
         text-align:center;
-        color:#d13c3c;
+        color:#777;
         padding:80px 20px;
       ">
-        作業資料讀取失敗
+        尚未同步新藝學園
       </div>
     `;
-  });
+  }
+}
 </script>
 
 <script>
