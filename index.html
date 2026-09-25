@@ -715,13 +715,16 @@ function updateButtons() {
 
   const dateFilterPanel = document.getElementById('dateFilterPanel');
 
-  if (filter === 'all') {
-    dateFilterPanel.style.display = 'flex';
-  } else {
-    dateFilterPanel.style.display = 'none';
-  }
+ if (filter === 'all') {
+  dateFilterPanel.style.display = 'flex';
 
-  render(filter);
+  // 每次重新進入「全部」，清除之前選的日期
+  document.getElementById('datePicker').value = '';
+} else {
+  dateFilterPanel.style.display = 'none';
+}
+
+render(filter);
 };
   });
 }
