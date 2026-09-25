@@ -479,12 +479,12 @@ background: transparent;
 
      <div class="welcome" id="welcomeCard">
   <h2>開始使用</h2>
-  <p>第一次使用只需要簡單設定一次。</p>
+  <p>第一次使用只需要安裝一次同步工具。</p>
 
   <div class="setup-steps">
     <div class="setup-step">
-      <strong>1　加入同步按鈕</strong>
-      <span>將「同步新藝學園」加入 Safari 書籤。</span>
+      <strong>1　安裝同步工具</strong>
+      <span>點擊下方按鈕，安裝 TNUA Homework List Sync。</span>
     </div>
 
     <div class="setup-step">
@@ -493,33 +493,20 @@ background: transparent;
     </div>
 
     <div class="setup-step">
-      <strong>3　同步作業</strong>
-      <span>在新藝學園點擊「同步新藝學園」書籤。</span>
+      <strong>3　完成</strong>
+      <span>之後只需要按「更新作業」即可同步。</span>
     </div>
   </div>
 
-  <button id="installButton">
-  安裝「同步新藝學園」
-</button>
-
-<div id="installPanel" style="display: none;">
-  <p>
-    將下方的「同步新藝學園」拖曳到 Safari 的喜好項目列。
-  </p>
-
   <a
-    href="javascript:(()=>{const s=document.createElement('script');s.src='https://hung970127.github.io/tnua-homewok--list/sync.js?'+Date.now();document.body.appendChild(s)})()"
-    class="bookmarklet"
+    id="installButton"
+    href="https://hung970127.github.io/tnua-homewok--list/tnua-homework.user.js"
+    target="_blank"
   >
-    同步新藝學園
+    安裝同步工具
   </a>
 
-  <p class="install-hint">
-    只需要設定一次，之後就可以直接同步。
-  </p>
-</div>
-       
-       <button id="connectButton">
+  <button id="connectButton">
     連結新藝學園
   </button>
 
@@ -527,7 +514,6 @@ background: transparent;
     不需要將新藝學園密碼提供給 TNUA Homework List。
   </p>
 </div>
-
 <div id="syncStatus" style="display: none;">
   <span id="lastSyncText">上次同步：--</span>
 
@@ -1098,15 +1084,7 @@ if (welcomeCard) {
 </script>
 
 <script>
-document.getElementById('installButton').addEventListener('click', () => {
-  const panel = document.getElementById('installPanel');
-
-  if (panel.style.display === 'none') {
-    panel.style.display = 'block';
-  } else {
-    panel.style.display = 'none';
-  }
-});
+// installButton 現在直接連到同步工具安裝頁，不需要額外 JavaScript
 
 const lastSync = localStorage.getItem('tnuaLastSync');
 
