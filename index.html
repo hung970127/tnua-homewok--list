@@ -147,6 +147,45 @@
         font-size: 29px;
       }
     }
+ .welcome {
+  margin-top: 48px;
+  padding: 36px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.welcome h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+.welcome > p {
+  color: #666;
+}
+
+#connectButton {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#connectButton:hover {
+  opacity: 0.8;
+}
+
+.welcome .privacy {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #999;
+}
   </style>
 </head>
 
@@ -162,6 +201,19 @@
         <p>把新藝學園的作業，整理在一個地方。</p>
       </div>
 
+      <div class="welcome">
+  <h2>開始使用</h2>
+  <p>連結新藝學園後，自動整理你的課程作業與截止時間。</p>
+
+  <button id="connectButton">
+    連結新藝學園
+  </button>
+
+  <p class="privacy">
+    TNUA Homework List 不會要求你提供新藝學園密碼。
+  </p>
+</div>
+    
       <div class="filters">
         <button class="filter active">待完成</button>
         <button class="filter">全部</button>
