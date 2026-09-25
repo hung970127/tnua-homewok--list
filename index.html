@@ -393,11 +393,10 @@
   </main>
 
 <script>
-const YEAR = 2026;
 let allHomeworks = [];
 let currentFilter = 'todo';
 
-function parseDate(text) {
+function parseDate(text, year = new Date().getFullYear()) {
   if (!text) return null;
 
   const [md, time] = text.split(' ');
@@ -406,7 +405,7 @@ function parseDate(text) {
   const [month, day] = md.split('-').map(Number);
   const [hour, minute] = time.split(':').map(Number);
 
-  return new Date(YEAR, month - 1, day, hour, minute);
+  return new Date(year, month - 1, day, hour, minute);
 }
 
 function getStatus(hw) {
