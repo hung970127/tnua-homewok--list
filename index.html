@@ -427,34 +427,145 @@ background: transparent;
   opacity: 0.8;
 }
 
-.setup-steps {
-  margin: 28px 0 8px;
-  text-align: left;
+/* 第一次使用教學 */
+
+#setupModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  background: rgba(0, 0, 0, .35);
+
+  padding: 20px;
+
+  align-items: center;
+  justify-content: center;
 }
 
-.setup-step {
+#setupModal.show {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 16px 0;
-  border-bottom: 1px solid #eeeeeb;
 }
 
-.setup-step:last-child {
-  border-bottom: none;
+.setup-modal-card {
+  width: min(520px, 100%);
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 28px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, .18);
 }
 
-.setup-step strong {
+.setup-modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.setup-modal-top h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.setup-close {
+  border: none;
+  background: #f1f1ef;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  font-size: 20px;
+  color: #555;
+}
+
+.setup-progress {
+  margin-top: 10px;
+  color: #999;
+  font-size: 13px;
+}
+
+.setup-modal-step {
+  display: none;
+  margin-top: 24px;
+}
+
+.setup-modal-step.active {
+  display: block;
+}
+
+.setup-modal-step h4 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.setup-modal-step p {
+  color: #666;
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+.setup-main-button {
+  display: block;
+  width: 100%;
+
+  padding: 12px 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111;
+  color: white;
+
   font-size: 15px;
   font-weight: 600;
-  color: #222;
+
+  text-align: center;
+  text-decoration: none;
+
+  cursor: pointer;
 }
 
-.setup-step span {
-  padding-left: 24px;
+.setup-secondary-button {
+  display: block;
+  width: 100%;
+
+  margin-top: 10px;
+  padding: 11px 16px;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  background: white;
+  color: #222;
+
   font-size: 14px;
-  line-height: 1.5;
-  color: #888;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.setup-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+
+  background: #f7f7f5;
+  border-radius: 10px;
+
+  color: #777;
+  font-size: 13px;
+  line-height: 1.6;
 }
     
     .welcome .privacy {
@@ -478,42 +589,173 @@ background: transparent;
       </div>
 
      <div class="welcome" id="welcomeCard">
+
   <h2>開始使用</h2>
-  <p>第一次使用只需要安裝一次同步工具。</p>
 
-  <div class="setup-steps">
-    <div class="setup-step">
-      <strong>1　安裝同步工具</strong>
-      <span>點擊下方按鈕，安裝 TNUA Homework List Sync。</span>
-    </div>
+  <p>
+    第一次使用只需要設定一次，之後就能一鍵更新作業。
+  </p>
 
-    <div class="setup-step">
-      <strong>2　連結新藝學園</strong>
-      <span>登入你自己的新藝學園帳號。</span>
-    </div>
-
-    <div class="setup-step">
-      <strong>3　完成</strong>
-      <span>之後只需要按「更新作業」即可同步。</span>
-    </div>
-  </div>
-
-  <a
-    id="installButton"
-    href="https://hung970127.github.io/tnua-homewok--list/tnua-homework.user.js"
-    target="_blank"
+  <button
+    id="startSetupButton"
+    class="setup-main-button"
+    style="max-width:260px;margin:18px auto 0;"
   >
-    安裝同步工具
-  </a>
-
-  <button id="connectButton">
-    連結新藝學園
+    開始設定
   </button>
 
   <p class="privacy">
     不需要將新藝學園密碼提供給 TNUA Homework List。
   </p>
+
 </div>
+
+
+<!-- 第一次使用教學視窗 -->
+
+<div id="setupModal" aria-hidden="true">
+
+  <div class="setup-modal-card">
+
+    <div class="setup-modal-top">
+
+      <h3>第一次使用設定</h3>
+
+      <button
+        class="setup-close"
+        id="closeSetupButton"
+        aria-label="關閉"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="setup-progress"
+      id="setupProgress"
+    >
+      第 1 步，共 3 步
+    </div>
+
+
+    <!-- 第 1 步 -->
+
+    <div
+      class="setup-modal-step active"
+      data-step="1"
+    >
+
+      <h4>① 安裝 Userscripts</h4>
+
+      <p>
+        Userscripts 是讓 Homework List
+        可以在新藝學園自動執行同步工具的 Safari 擴充功能。
+      </p>
+
+      <a
+        class="setup-main-button"
+        href="https://apps.apple.com/tw/app/userscripts/id1463298887"
+        target="_blank"
+        rel="noopener"
+      >
+        前往 App Store 安裝
+      </a>
+
+      <button
+        class="setup-secondary-button"
+        data-next="2"
+      >
+        我已經安裝 → 下一步
+      </button>
+
+    </div>
+
+
+    <!-- 第 2 步 -->
+
+    <div
+      class="setup-modal-step"
+      data-step="2"
+    >
+
+      <h4>② 開啟 Safari 擴充功能</h4>
+
+      <p>
+        安裝完成後，請回到 Safari，
+        開啟 Userscripts 擴充功能。
+        如果 Safari 詢問是否允許它在網站上運作，請允許。
+      </p>
+
+      <div class="setup-note">
+        Mac：Safari → 設定 → 擴充功能 → Userscripts → 開啟
+      </div>
+
+      <button
+        class="setup-secondary-button"
+        data-back="1"
+      >
+        ← 上一步
+      </button>
+
+      <button
+        class="setup-main-button"
+        data-next="3"
+      >
+        已經開啟 → 下一步
+      </button>
+
+    </div>
+
+
+    <!-- 第 3 步 -->
+
+    <div
+      class="setup-modal-step"
+      data-step="3"
+    >
+
+      <h4>③ 安裝 TNUA 同步工具</h4>
+
+      <p>
+        最後一步。
+        按下方按鈕開啟同步工具，
+        Userscripts 會提供安裝提示。
+      </p>
+
+      <a
+        id="installButton"
+        class="setup-main-button"
+        href="https://hung970127.github.io/tnua-homewok--list/tnua-homework.user.js"
+        target="_blank"
+      >
+        安裝同步工具
+      </a>
+
+      <button
+        class="setup-secondary-button"
+        data-back="2"
+      >
+        ← 上一步
+      </button>
+
+      <button
+        class="setup-main-button"
+        id="finishSetupButton"
+        style="margin-top:10px;"
+      >
+        完成設定
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div id="syncStatus" style="display: none;">
 <div id="syncStatus" style="display: none;">
   <span id="lastSyncText">上次同步：--</span>
 
