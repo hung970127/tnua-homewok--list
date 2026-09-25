@@ -410,8 +410,8 @@ function parseDate(text, year = new Date().getFullYear()) {
 
 function getStatus(hw) {
   const now = new Date();
-  const open = parseDate(hw.open);
-  const deadline = parseDate(hw.deadline);
+  const open = parseDate(hw.open, hw.year);
+  const deadline = parseDate(hw.deadline, hw.year);
 
   if (hw.submitted) return 'done';
   if (open && now < open) return 'future';
@@ -471,10 +471,9 @@ function render(filter = 'todo') {
       ? [...allHomeworks]
       : allHomeworks.filter(hw => hw.status === filter);
 
-  homeworks.sort((a, b) => {
-    return parseDate(a.deadline) - parseDate(b.deadline);
-  });
-
+ homeworks.sort((a, b) => {
+  return parseDate(a.deadline, a.year) - parseDate(b.deadline, b.year);
+});
   if (homeworks.length === 0) {
     list.innerHTML = `
       <div style="
@@ -491,7 +490,7 @@ function render(filter = 'todo') {
   const groups = {};
 
   for (const hw of homeworks) {
-    const deadline = parseDate(hw.deadline);
+  const deadline = parseDate(hw.deadline, hw.year);
 
     const key = deadline
       ? `${deadline.getFullYear()}-${deadline.getMonth()}-${deadline.getDate()}`
