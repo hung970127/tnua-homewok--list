@@ -534,15 +534,17 @@
   </button>
 </div>
       
-      <div class="filters">
-        <button class="filter active">待完成</button>
-        <button class="filter">全部</button>
-        <button class="filter">已逾期</button>
-        <button class="filter">未來</button>
-        <button class="filter">已完成</button>
-      </div>
+     <div class="filters">
+  <button class="filter active">待完成</button>
+  <button class="filter">全部</button>
+  <button class="filter">已逾期</button>
+  <button class="filter">未來</button>
+  <button class="filter">已完成</button>
+</div>
 
-     <div id="dateFilterPanel" style="display: none;">
+<div id="monthFilters" class="filters" style="display: none;"></div>
+
+<div id="dateFilterPanel" style="display: none;">
 
   <div class="calendar-header">
     <button id="prevMonth" class="calendar-arrow">‹</button>
@@ -810,7 +812,41 @@ homeworks.sort((a, b) => {
   }
 }
 
+function renderMonthFilters() {
+  const monthFilters = document.getElementById('monthFilters');
+
+  monthFilters.innerHTML = '';
+
+  const year = calendarDate.getFullYear();
+
+  for (let month = 0; month < 12; month++) {
+    const button = document.createElement('button');
+
+    button.className = 'filter';
+    button.textContent = `${month + 1}月`;
+
+    if (
+      calendarDate.getFullYear() === year &&
+      calendarDate.getMonth() === month
+    ) {
+      button.classList.add('active');
+    }
+
+    button.addEventListener('click', () => {
+      calendarDate = new Date(year, month, 1);
+      selectedDate = null;
+
+      renderMonthFilters();
+      renderCalendar();
+      render('all');
+    });
+
+    monthFilters.appendChild(button);
+  }
+}
+
 function renderCalendar() {
+  
   const calendarMonth = document.getElementById('calendarMonth');
   const calendarDays = document.getElementById('calendarDays');
 
@@ -884,18 +920,28 @@ if (homeworkDays.has(day)) {
   }
 }
 
-document.getElementById('prevMonth').addEventListener('click', () => {
-  calendarDate.setMonth(calendarDate.getMonth() - 1);
-  selectedDate = null;
+const dateFilterPanel = document.getElementById('dateFilterPanel');
+const monthFilters = document.getElementById('monthFilters');
 
+if (filter === 'all') {
+  monthFilters.style.display = 'flex';
+  dateFilterPanel.style.display = 'flex';
+
+  selectedDate = null;
+  calendarDate = new Date();
+
+  renderMonthFilters();
   renderCalendar();
-  render('all');
-});
+} else {
+  monthFilters.style.display = 'none';
+  dateFilterPanel.style.display = 'none';
+}
 
 document.getElementById('nextMonth').addEventListener('click', () => {
   calendarDate.setMonth(calendarDate.getMonth() + 1);
   selectedDate = null;
 
+  renderMonthFilters();
   renderCalendar();
   render('all');
 });
@@ -936,16 +982,20 @@ function updateButtons() {
   buttons.forEach(b => b.classList.remove('active'));
   button.classList.add('active');
 
-  const dateFilterPanel = document.getElementById('dateFilterPanel');
+  cconst dateFilterPanel = document.getElementById('dateFilterPanel');
+const monthFilters = document.getElementById('monthFilters');
 
- if (filter === 'all') {
+if (filter === 'all') {
+  monthFilters.style.display = 'flex';
   dateFilterPanel.style.display = 'flex';
 
   selectedDate = null;
   calendarDate = new Date();
 
+  renderMonthFilters();
   renderCalendar();
 } else {
+  monthFilters.style.display = 'none';
   dateFilterPanel.style.display = 'none';
 }
 
