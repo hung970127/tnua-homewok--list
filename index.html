@@ -1081,6 +1081,101 @@ if (welcomeCard) {
   welcomeCard.style.display = 'none';
 }
 });
+});
+
+// ================================
+// 接收從新藝學園返回的同步資料
+// ================================
+
+function readSyncDataFromURL() {
+  const hash = window.location.hash;
+
+  if (!hash.startsWith('#sync=')) {
+    return;
+  }
+
+  try {
+    const encoded = decodeURIComponent(
+      hash.substring(6)
+    );
+
+    const json = decodeURIComponent(
+      escape(atob(encoded))
+    );
+
+    const data = JSON.parse(json);
+
+    if (
+      data.type !== 'TNUA_HOMEWORK_SYNC' ||
+      !Array.isArray(data.homeworks)
+    ) {
+      return;
+    }
+
+    const homeworks = data.homeworks;
+
+    // 儲存作業
+    localStorage.setItem(
+      'tnuaHomeworks',
+      JSON.stringify(homeworks)
+    );
+
+    // 儲存同步時間
+    const syncTime = new Date();
+
+    localStorage.setItem(
+      'tnuaLastSync',
+      syncTime.toISOString()
+    );
+
+    // 更新畫面
+    loadHomeworks(homeworks);
+
+    // 顯示同步狀態
+    const syncStatus =
+      document.getElementById('syncStatus');
+
+    const lastSyncText =
+      document.getElementById('lastSyncText');
+
+    syncStatus.style.display = 'flex';
+
+    lastSyncText.textContent =
+      `上次同步：${syncTime.toLocaleString('zh-TW', {
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`;
+
+    // 隱藏第一次使用畫面
+    const welcomeCard =
+      document.getElementById('welcomeCard');
+
+    if (welcomeCard) {
+      welcomeCard.style.display = 'none';
+    }
+
+    // 清掉網址裡的同步資料
+    history.replaceState(
+      null,
+      '',
+      window.location.pathname
+    );
+
+    console.log(
+      `✓ 成功同步 ${homeworks.length} 個作業`
+    );
+
+  } catch (error) {
+    console.error(
+      '讀取同步資料失敗：',
+      error
+    );
+  }
+}
+
+readSyncDataFromURL();
 </script>
 
 <script>
