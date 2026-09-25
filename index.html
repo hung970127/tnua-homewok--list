@@ -181,7 +181,39 @@
   background: #f5f5f5;
 }
 
-#installPanel {
+#syncStatus {
+  margin: 20px 0;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid #e8e8e5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+#lastSyncText {
+  font-size: 13px;
+  color: #888;
+}
+
+#updateButton {
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#updateButton:hover {
+  opacity: 0.85;
+}
+    
+    #installPanel {
   margin-top: 16px;
   padding: 20px;
   background: #f7f7f5;
@@ -360,7 +392,15 @@
     不需要將新藝學園密碼提供給 TNUA Homework List。
   </p>
 </div>
-    
+
+<div id="syncStatus" style="display: none;">
+  <span id="lastSyncText">上次同步：--</span>
+
+  <button id="updateButton">
+    更新作業
+  </button>
+</div>
+      
       <div class="filters">
         <button class="filter active">待完成</button>
         <button class="filter">全部</button>
