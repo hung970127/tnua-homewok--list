@@ -180,26 +180,248 @@
   </main>
 
 <script>
-  fetch('./homeworks.json')
-    .then(response => response.json())
-    .then(homeworks => {
-      const list = document.getElementById('homework-list');
+const YEAR = 2026;
+let allHomeworks = [];
+let currentFilter = 'todo';
 
-      if (homeworks.length === 0) {
-        list.innerHTML = `
-          <div style="
-            text-align: center;
-            color: #999;
-            padding: 80px 20px;
-          ">
-            目前沒有作業
-          </div>
-        `;
-      }
-    })
-    .catch(error => {
-      console.error(error);
+function parseDate(text) {
+  if (!text) return null;
+
+  const [md, time] = text.split(' ');
+  if (!md || !time) return null;
+
+  const [month, day] = md.split('-').map(Number);
+  const [hour, minute] = time.split(':').map(Number);
+
+  return new Date(YEAR, month - 1, day, hour, minute);
+}
+
+function getStatus(hw) {
+  const now = new Date();
+  const open = parseDate(hw.open);
+  const deadline = parseDate(hw.deadline);
+
+  if (hw.submitted) return 'done';
+  if (open && now < open) return 'future';
+  if (deadline && now > deadline) return 'late';
+
+  return 'todo';
+}
+
+function formatDate(date) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  let label = '';
+
+  if (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  ) {
+    label = ' · 今天';
+  }
+
+  else if (
+    date.getFullYear() === tomorrow.getFullYear() &&
+    date.getMonth() === tomorrow.getMonth() &&
+    date.getDate() === tomorrow.getDate()
+  ) {
+    label = ' · 明天';
+  }
+
+  return `${month} 月 ${day} 日${label}`;
+}
+
+function statusInfo(status) {
+  const map = {
+    todo: ['待完成', 'todo'],
+    late: ['已逾期', 'late'],
+    done: ['已完成', 'done'],
+    future: ['尚未開放', '']
+  };
+
+  return map[status];
+}
+
+function render(filter = 'todo') {
+  currentFilter = filter;
+
+  const list = document.getElementById('homework-list');
+  list.innerHTML = '';
+
+  let homeworks =
+    filter === 'all'
+      ? [...allHomeworks]
+      : allHomeworks.filter(hw => hw.status === filter);
+
+  homeworks.sort((a, b) => {
+    return parseDate(a.deadline) - parseDate(b.deadline);
+  });
+
+  if (homeworks.length === 0) {
+    list.innerHTML = `
+      <div style="
+        text-align:center;
+        color:#999;
+        padding:80px 20px;
+      ">
+        目前沒有作業
+      </div>
+    `;
+    return;
+  }
+
+  const groups = {};
+
+  for (const hw of homeworks) {
+    const deadline = parseDate(hw.deadline);
+
+    const key = deadline
+      ? `${deadline.getFullYear()}-${deadline.getMonth()}-${deadline.getDate()}`
+      : 'unknown';
+
+    if (!groups[key]) {
+      groups[key] = {
+        date: deadline,
+        homeworks: []
+      };
+    }
+
+    groups[key].homeworks.push(hw);
+  }
+
+  for (const group of Object.values(groups)) {
+    const section = document.createElement('section');
+    section.className = 'date-section';
+
+    const dateTitle = document.createElement('div');
+    dateTitle.className = 'date';
+
+    dateTitle.textContent =
+      group.date
+        ? formatDate(group.date)
+        : '未設定期限';
+
+    section.appendChild(dateTitle);
+
+    for (const hw of group.homeworks) {
+      const card = document.createElement('a');
+
+      card.className = 'homework';
+      card.href = hw.url;
+      card.target = '_blank';
+
+      const [statusText, statusClass] =
+        statusInfo(hw.status);
+
+      const deadline = parseDate(hw.deadline);
+
+      const time =
+        deadline
+          ? deadline.toLocaleTimeString('zh-TW', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            })
+          : '—';
+
+      const course = document.createElement('div');
+      course.className = 'course';
+      course.textContent = hw.course;
+
+      const title = document.createElement('div');
+      title.className = 'homework-title';
+      title.textContent = hw.name;
+
+      const info = document.createElement('div');
+      info.className = 'info';
+
+      const deadlineText = document.createElement('span');
+      deadlineText.textContent = `截止 ${time}`;
+
+      const status = document.createElement('span');
+      status.className = `status ${statusClass}`;
+      status.textContent = statusText;
+
+      info.appendChild(deadlineText);
+      info.appendChild(status);
+
+      card.appendChild(course);
+      card.appendChild(title);
+      card.appendChild(info);
+
+      section.appendChild(card);
+    }
+
+    list.appendChild(section);
+  }
+}
+
+function updateButtons() {
+  const counts = {
+    todo: allHomeworks.filter(x => x.status === 'todo').length,
+    late: allHomeworks.filter(x => x.status === 'late').length,
+    future: allHomeworks.filter(x => x.status === 'future').length,
+    done: allHomeworks.filter(x => x.status === 'done').length,
+    all: allHomeworks.length
+  };
+
+  const buttons = document.querySelectorAll('.filter');
+
+  const data = [
+    ['todo', `待完成 ${counts.todo}`],
+    ['all', `全部 ${counts.all}`],
+    ['late', `已逾期 ${counts.late}`],
+    ['future', `未來 ${counts.future}`],
+    ['done', `已完成 ${counts.done}`]
+  ];
+
+  buttons.forEach((button, index) => {
+    const [filter, text] = data[index];
+
+    button.dataset.filter = filter;
+    button.textContent = text;
+
+    button.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+
+      render(filter);
     });
+  });
+}
+
+fetch('./homeworks.json')
+  .then(response => response.json())
+  .then(homeworks => {
+
+    allHomeworks = homeworks.map(hw => ({
+      ...hw,
+      status: getStatus(hw)
+    }));
+
+    updateButtons();
+
+    render('todo');
+  })
+  .catch(error => {
+    console.error(error);
+
+    document.getElementById('homework-list').innerHTML = `
+      <div style="
+        text-align:center;
+        color:#d13c3c;
+        padding:80px 20px;
+      ">
+        作業資料讀取失敗
+      </div>
+    `;
+  });
 </script>
 
 </body>
