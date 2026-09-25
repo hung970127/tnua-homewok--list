@@ -427,145 +427,56 @@ background: transparent;
   opacity: 0.8;
 }
 
-/* 第一次使用教學 */
-
-#setupModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-
-  background: rgba(0, 0, 0, .35);
-
-  padding: 20px;
-
-  align-items: center;
-  justify-content: center;
-}
-
-#setupModal.show {
-  display: flex;
-}
-
-.setup-modal-card {
-  width: min(520px, 100%);
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  background: white;
-
-  border-radius: 20px;
-
-  padding: 28px;
-
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, .18);
-}
-
-.setup-modal-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.setup-modal-top h3 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.setup-close {
-  border: none;
-  background: #f1f1ef;
-
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  cursor: pointer;
-
-  font-size: 20px;
-  color: #555;
-}
-
-.setup-progress {
-  margin-top: 10px;
-  color: #999;
-  font-size: 13px;
-}
-
-.setup-modal-step {
-  display: none;
-  margin-top: 24px;
-}
-
-.setup-modal-step.active {
-  display: block;
-}
-
-.setup-modal-step h4 {
-  margin: 0 0 10px;
-  font-size: 20px;
-}
-
-.setup-modal-step p {
-  color: #666;
-  line-height: 1.7;
-  margin: 0 0 18px;
-}
-
-.setup-main-button {
-  display: block;
-  width: 100%;
-
-  padding: 12px 16px;
-
+#connectButton {
+  margin-top: 18px;
+  padding: 12px 22px;
   border: none;
   border-radius: 10px;
-
   background: #111;
   color: white;
-
   font-size: 15px;
   font-weight: 600;
-
-  text-align: center;
-  text-decoration: none;
-
   cursor: pointer;
 }
 
-.setup-secondary-button {
-  display: block;
-  width: 100%;
+#connectButton:hover {
+  opacity: 0.8;
+}
 
-  margin-top: 10px;
-  padding: 11px 16px;
+.setup-steps {
+  margin: 28px 0 8px;
+  text-align: left;
+}
 
-  border: 1px solid #ddd;
-  border-radius: 10px;
+.setup-step {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eeeeeb;
+}
 
-  background: white;
-  color: #222;
+.setup-step:last-child {
+  border-bottom: none;
+}
 
-  font-size: 14px;
+.setup-step strong {
+  font-size: 15px;
   font-weight: 600;
-
-  cursor: pointer;
+  color: #222;
 }
 
-.setup-note {
-  margin-top: 14px;
-  padding: 12px 14px;
+.setup-step span {
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #888;
+}
 
-  background: #f7f7f5;
-  border-radius: 10px;
-
-  color: #777;
+.welcome .privacy {
+  margin-top: 18px;
   font-size: 13px;
-  line-height: 1.6;
+  color: #999;
 }
     
     .welcome .privacy {
