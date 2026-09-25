@@ -620,67 +620,30 @@ function loadHomeworks(homeworks) {
 }
 
 
-// ① 檢查是不是剛從新藝學園同步回來
-const params = new URLSearchParams(window.location.search);
-const syncData = params.get('sync');
+/// 讀取這台電腦之前同步的作業資料
+const saved = localStorage.getItem('tnuaHomeworks');
 
-if (syncData) {
+if (saved) {
   try {
-    const homeworks = JSON.parse(decodeURIComponent(syncData));
-
-    // 存在這位使用者自己的瀏覽器
-    localStorage.setItem(
-      'tnuaHomeworks',
-      JSON.stringify(homeworks)
-    );
-
-    // 記錄同步時間
-    localStorage.setItem(
-      'tnuaLastSync',
-      new Date().toISOString()
-    );
-
-    // 把網址上的 ?sync=... 清掉
-    window.history.replaceState(
-      {},
-      '',
-      window.location.pathname
-    );
-
-    loadHomeworks(homeworks);
-
+    loadHomeworks(JSON.parse(saved));
   } catch (error) {
-    console.error('同步資料解析失敗：', error);
+    console.error('本機資料讀取失敗：', error);
   }
-
 } else {
+  // 第一次使用，還沒有任何作業資料
+  allHomeworks = [];
+  updateButtons();
 
-  // ② 沒有新同步資料，就讀取這台電腦之前同步的資料
-  const saved = localStorage.getItem('tnuaHomeworks');
-
-  if (saved) {
-    try {
-      loadHomeworks(JSON.parse(saved));
-    } catch (error) {
-      console.error('本機資料讀取失敗：', error);
-    }
-
-  } else {
-
-    // ③ 第一次使用，還沒有任何作業資料
-    allHomeworks = [];
-    updateButtons();
-
-    document.getElementById('homework-list').innerHTML = `
-      <div style="
-        text-align:center;
-        color:#777;
-        padding:80px 20px;
-      ">
-        尚未同步新藝學園
-      </div>
-    `;
-  }
+  document.getElementById('homework-list').innerHTML = `
+    <div style="
+      text-align:center;
+      color:#777;
+      padding:80px 20px;
+    ">
+      尚未同步新藝學園
+    </div>
+  `;
+}
 }
 document.getElementById('connectButton').addEventListener('click', () => {
   window.open(
