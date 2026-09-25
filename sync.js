@@ -66,9 +66,16 @@
 
   console.log('TNUA HOMEWORK DATA:', homeworks);
 
-  window.TNUA_HOMEWORKS = homeworks;
+ window.TNUA_HOMEWORKS = homeworks;
 
-  alert(
-    `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。`
-  );
+const data = encodeURIComponent(JSON.stringify(homeworks));
+
+const homeworkListURL =
+  'https://hung970127.github.io/tnua-homewok--list/?sync=' + data;
+
+alert(
+  `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。\n\n接下來會回到 TNUA Homework List。`
+);
+
+window.location.href = homeworkListURL;
 })();
