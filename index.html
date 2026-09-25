@@ -321,6 +321,31 @@
   font-weight: 600;
 }
 
+/* 有作業的日期 */
+.calendar-day.has-homework {
+  position: relative;
+}
+
+.calendar-day.has-homework::after {
+  content: "";
+  position: absolute;
+
+  width: 4px;
+  height: 4px;
+
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+  background: #888;
+}
+
+/* 被選中的日期，小圓點改成白色 */
+.calendar-day.selected.has-homework::after {
+  background: white;
+}
+    
 /* 查看整月 */
 #clearDateButton {
   align-self: flex-end;
@@ -805,11 +830,31 @@ function renderCalendar() {
 
   const today = new Date();
 
-  for (let day = 1; day <= daysInMonth; day++) {
+// 找出這個月份哪些日期有作業
+const homeworkDays = new Set();
+
+allHomeworks.forEach(hw => {
+  const deadline = parseDate(hw.deadline, hw.year);
+
+  if (
+    deadline &&
+    deadline.getFullYear() === year &&
+    deadline.getMonth() === month
+  ) {
+    homeworkDays.add(deadline.getDate());
+  }
+});
+
+for (let day = 1; day <= daysInMonth; day++) {
     const button = document.createElement('button');
 
     button.className = 'calendar-day';
-    button.textContent = day;
+button.textContent = day;
+
+// 這一天有作業
+if (homeworkDays.has(day)) {
+  button.classList.add('has-homework');
+}
 
     if (
       year === today.getFullYear() &&
