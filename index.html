@@ -180,6 +180,46 @@
 #installButton:hover {
   background: #f5f5f5;
 }
+
+#installPanel {
+  margin-top: 16px;
+  padding: 20px;
+  background: #f7f7f5;
+  border: 1px solid #e8e8e5;
+  border-radius: 12px;
+  text-align: center;
+}
+
+#installPanel p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.bookmarklet {
+  display: inline-block;
+  padding: 11px 18px;
+  background: #ffffff;
+  border: 1px solid #ddddda;
+  border-radius: 9px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.bookmarklet:hover {
+  background: #f1f1ef;
+}
+
+#installPanel .install-hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #999;
+}
     
     #connectButton {
   margin-top: 18px;
@@ -272,6 +312,23 @@
   安裝「同步新藝學園」
 </button>
 
+<div id="installPanel" style="display: none;">
+  <p>
+    將下方的「同步新藝學園」拖曳到 Safari 的喜好項目列。
+  </p>
+
+  <a
+    href="javascript:(()=>{const s=document.createElement('script');s.src='https://hung970127.github.io/tnua-homewok--list/sync.js?'+Date.now();document.body.appendChild(s)})()"
+    class="bookmarklet"
+  >
+    同步新藝學園
+  </a>
+
+  <p class="install-hint">
+    只需要設定一次，之後就可以直接同步。
+  </p>
+</div>
+       
 <div id="bookmarkletTest" style="margin-top: 14px;">
   <a
     href="javascript:(()=>{const s=document.createElement('script');s.src='https://hung970127.github.io/tnua-homewok--list/sync.js?'+Date.now();document.body.appendChild(s)})()"
