@@ -1052,13 +1052,18 @@ if (welcomeCard) {
 // ================================
 
 function readSyncDataFromURL() {
+
   const hash = window.location.hash;
 
+  console.log('TNUA Sync Hash:', hash);
+
   if (!hash.startsWith('#sync=')) {
+    console.log('沒有找到同步資料');
     return;
   }
 
   try {
+
     const encoded = decodeURIComponent(
       hash.substring(6)
     );
@@ -1069,22 +1074,29 @@ function readSyncDataFromURL() {
 
     const data = JSON.parse(json);
 
+    console.log('收到同步資料：', data);
+
     if (
       data.type !== 'TNUA_HOMEWORK_SYNC' ||
       !Array.isArray(data.homeworks)
     ) {
+      console.error('同步資料格式錯誤');
       return;
     }
 
     const homeworks = data.homeworks;
 
-    // 儲存作業
+    /*
+     * 儲存作業
+     */
     localStorage.setItem(
       'tnuaHomeworks',
       JSON.stringify(homeworks)
     );
 
-    // 儲存同步時間
+    /*
+     * 更新同步時間
+     */
     const syncTime = new Date();
 
     localStorage.setItem(
@@ -1092,10 +1104,14 @@ function readSyncDataFromURL() {
       syncTime.toISOString()
     );
 
-    // 更新畫面
+    /*
+     * 更新作業列表
+     */
     loadHomeworks(homeworks);
 
-    // 顯示同步狀態
+    /*
+     * 顯示同步狀態
+     */
     const syncStatus =
       document.getElementById('syncStatus');
 
@@ -1112,15 +1128,9 @@ function readSyncDataFromURL() {
         minute: '2-digit'
       })}`;
 
-    // 隱藏第一次使用畫面
-    const welcomeCard =
-      document.getElementById('welcomeCard');
-
-    if (welcomeCard) {
-      welcomeCard.style.display = 'none';
-    }
-
-    // 清掉網址裡的同步資料
+    /*
+     * 清除網址中的 #sync=
+     */
     history.replaceState(
       null,
       '',
@@ -1132,14 +1142,25 @@ function readSyncDataFromURL() {
     );
 
   } catch (error) {
+
     console.error(
       '讀取同步資料失敗：',
       error
     );
+
+    alert(
+      '同步資料讀取失敗，請再試一次。'
+    );
   }
 }
 
-readSyncDataFromURL();
+
+/*
+ * 等頁面載入後再讀取同步資料
+ */
+window.addEventListener('load', () => {
+  readSyncDataFromURL();
+});
 </script>
 
 <script>
