@@ -540,7 +540,7 @@ background: transparent;
   <button class="filter">全部</button>
   <button class="filter active">待完成</button>
   <button class="filter">已逾期</button>
-  <button class="filter">未開放</button>
+  <button class="filter">尚未開放</button>
   <button class="filter">已完成</button>
 </div>
 
@@ -963,7 +963,7 @@ function updateButtons() {
   ['all', `全部 ${counts.all}`],
   ['todo', `待完成 ${counts.todo}`],
   ['late', `已逾期 ${counts.late}`],
-  ['future', `未開放 ${counts.future}`],
+  ['future', `尚未開放 ${counts.future}`],
   ['done', `已完成 ${counts.done}`]
 ];
   buttons.forEach((button, index) => {
