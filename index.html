@@ -821,8 +821,10 @@ function renderMonthFilters() {
 
   const year = calendarDate.getFullYear();
 
-  for (let month = 0; month < 12; month++) {
-    const button = document.createElement('button');
+  const monthOrder = [8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7];
+
+for (const month of monthOrder) {
+  const button = document.createElement('button');
 
     button.className = 'filter month-filter';
     button.textContent = `${month + 1}月`;
