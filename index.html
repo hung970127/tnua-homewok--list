@@ -172,80 +172,35 @@
     </header>
 
 
-    <section class="date-section">
-
-      <div class="date">
-        9 月 25 日 · 今天
-      </div>
-
-      <a
-        class="homework"
-        href="https://eclass.tnua.edu.tw/course/homework/15345"
-        target="_blank"
-      >
-
-        <div class="course">
-          專題講座 Seminar
-        </div>
-
-        <div class="homework-title">
-          作業範例：本週課程心得
-        </div>
-
-        <div class="info">
-
-          <span>
-            截止 23:59
-          </span>
-
-          <span class="status todo">
-            待完成
-          </span>
-
-        </div>
-
-      </a>
-
-    </section>
+    <div id="homework-list"></div>
 
 
-    <section class="date-section">
-
-      <div class="date">
-        9 月 26 日 · 明天
-      </div>
-
-      <a
-        class="homework"
-        href="https://eclass.tnua.edu.tw/course/homework/15374"
-        target="_blank"
-      >
-
-        <div class="course">
-          專題講座 Seminar
-        </div>
-
-        <div class="homework-title">
-          作業範例：第二份課程作業
-        </div>
-
-        <div class="info">
-
-          <span>
-            截止 23:59
-          </span>
-
-          <span class="status todo">
-            待完成
-          </span>
-
-        </div>
-
-      </a>
-
-    </section>
+  <div id="homework-list"></div>
 
   </main>
+
+<script>
+  fetch('./homeworks.json')
+    .then(response => response.json())
+    .then(homeworks => {
+      const list = document.getElementById('homework-list');
+
+      if (homeworks.length === 0) {
+        list.innerHTML = `
+          <div style="
+            text-align: center;
+            color: #999;
+            padding: 80px 20px;
+          ">
+            目前沒有作業
+          </div>
+        `;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+</script>
 
 </body>
 </html>
