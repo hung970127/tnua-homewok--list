@@ -822,7 +822,7 @@ function renderMonthFilters() {
   for (let month = 0; month < 12; month++) {
     const button = document.createElement('button');
 
-    button.className = 'filter';
+    button.className = 'filter month-filter';
     button.textContent = `${month + 1}月`;
 
     if (
@@ -920,22 +920,14 @@ if (homeworkDays.has(day)) {
   }
 }
 
-const dateFilterPanel = document.getElementById('dateFilterPanel');
-const monthFilters = document.getElementById('monthFilters');
-
-if (filter === 'all') {
-  monthFilters.style.display = 'flex';
-  dateFilterPanel.style.display = 'flex';
-
+document.getElementById('prevMonth').addEventListener('click', () => {
+  calendarDate.setMonth(calendarDate.getMonth() - 1);
   selectedDate = null;
-  calendarDate = new Date();
 
   renderMonthFilters();
   renderCalendar();
-} else {
-  monthFilters.style.display = 'none';
-  dateFilterPanel.style.display = 'none';
-}
+  render('all');
+});
 
 document.getElementById('nextMonth').addEventListener('click', () => {
   calendarDate.setMonth(calendarDate.getMonth() + 1);
@@ -962,8 +954,7 @@ function updateButtons() {
     all: allHomeworks.length
   };
 
-  const buttons = document.querySelectorAll('.filter');
-
+  const buttons = document.querySelectorAll('.filter:not(.month-filter)');
   const data = [
     ['todo', `待完成 ${counts.todo}`],
     ['all', `全部 ${counts.all}`],
@@ -982,7 +973,7 @@ function updateButtons() {
   buttons.forEach(b => b.classList.remove('active'));
   button.classList.add('active');
 
-  cconst dateFilterPanel = document.getElementById('dateFilterPanel');
+  const dateFilterPanel = document.getElementById('dateFilterPanel');
 const monthFilters = document.getElementById('monthFilters');
 
 if (filter === 'all') {
