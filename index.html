@@ -385,6 +385,11 @@
         <button class="filter">未來</button>
         <button class="filter">已完成</button>
       </div>
+
+      <div id="dateFilterPanel" style="display: none;">
+  <input type="date" id="datePicker">
+</div>
+      
     </header>
 
 
@@ -609,12 +614,20 @@ function updateButtons() {
     button.dataset.filter = filter;
     button.textContent = text;
 
-    button.onclick = () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      button.classList.add('active');
+   button.onclick = () => {
+  buttons.forEach(b => b.classList.remove('active'));
+  button.classList.add('active');
 
-      render(filter);
-   };
+  const dateFilterPanel = document.getElementById('dateFilterPanel');
+
+  if (filter === 'all') {
+    dateFilterPanel.style.display = 'block';
+  } else {
+    dateFilterPanel.style.display = 'none';
+  }
+
+  render(filter);
+};
   });
 }
 
