@@ -181,7 +181,37 @@
   opacity: 0.8;
 }
 
-.welcome .privacy {
+.setup-steps {
+  margin: 28px 0 8px;
+  text-align: left;
+}
+
+.setup-step {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eeeeeb;
+}
+
+.setup-step:last-child {
+  border-bottom: none;
+}
+
+.setup-step strong {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+.setup-step span {
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #888;
+}
+    
+    .welcome .privacy {
   margin-top: 18px;
   font-size: 13px;
   color: #999;
@@ -201,16 +231,33 @@
         <p>把新藝學園的作業，整理在一個地方。</p>
       </div>
 
-      <div class="welcome">
+     <div class="welcome">
   <h2>開始使用</h2>
-  <p>連結新藝學園後，自動整理你的課程作業與截止時間。</p>
+  <p>第一次使用只需要簡單設定一次。</p>
+
+  <div class="setup-steps">
+    <div class="setup-step">
+      <strong>1　加入同步按鈕</strong>
+      <span>將「同步新藝學園」加入 Safari 書籤。</span>
+    </div>
+
+    <div class="setup-step">
+      <strong>2　連結新藝學園</strong>
+      <span>登入你自己的新藝學園帳號。</span>
+    </div>
+
+    <div class="setup-step">
+      <strong>3　同步作業</strong>
+      <span>在新藝學園點擊「同步新藝學園」書籤。</span>
+    </div>
+  </div>
 
   <button id="connectButton">
     連結新藝學園
   </button>
 
   <p class="privacy">
-    TNUA Homework List 不會要求你提供新藝學園密碼。
+    不需要將新藝學園密碼提供給 TNUA Homework List。
   </p>
 </div>
     
