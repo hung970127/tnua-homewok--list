@@ -522,10 +522,49 @@ function render(filter = 'todo') {
   list.innerHTML = '';
 
   let homeworks =
-    filter === 'all'
-      ? [...allHomeworks]
-      : allHomeworks.filter(hw => hw.status === filter);
+  filter === 'all'
+    ? [...allHomeworks]
+    : allHomeworks.filter(hw => hw.status === filter);
 
+// 「全部」預設顯示本月作業
+if (filter === 'all') {
+  const datePicker = document.getElementById('datePicker');
+  const selectedDate = datePicker.value;
+
+  if (selectedDate) {
+    // 有選日期：只顯示選擇的那一天
+    const [year, month, day] = selectedDate.split('-').map(Number);
+
+    homeworks = homeworks.filter(hw => {
+      const deadline = parseDate(hw.deadline, hw.year);
+
+      if (!deadline) return false;
+
+      return (
+        deadline.getFullYear() === year &&
+        deadline.getMonth() + 1 === month &&
+        deadline.getDate() === day
+      );
+    });
+
+  } else {
+    // 沒選日期：顯示本月所有作業
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+
+    homeworks = homeworks.filter(hw => {
+      const deadline = parseDate(hw.deadline, hw.year);
+
+      if (!deadline) return false;
+
+      return (
+        deadline.getFullYear() === currentYear &&
+        deadline.getMonth() === currentMonth
+      );
+    });
+  }
+}
 homeworks.sort((a, b) => {
   const aDeadline = parseDate(a.deadline, a.year);
   const bDeadline = parseDate(b.deadline, b.year);
