@@ -1,71 +1,226 @@
-(async () => {
-  console.log('📚 正在抓取所有課程作業...');
-
-  const courses = [
-    ...new Map(
-      [...document.querySelectorAll('a[href^="/course/"]')]
-        .filter(a => /^\/course\/\d+$/.test(a.getAttribute('href')))
-        .map(a => [
-          a.getAttribute('href').split('/').pop(),
-          {
-            id: a.getAttribute('href').split('/').pop(),
-            name: a.textContent.trim()
-          }
-        ])
-    ).values()
-  ].filter(c => c.name);
-
-  const homeworks = [];
-
-  for (const course of courses) {
-    console.log(`讀取：${course.name}`);
-
-    try {
-      const response = await fetch(`/course/homeworkList/${course.id}`);
-      const html = await response.text();
-
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-
-      const rows = [
-        ...doc.querySelectorAll('#homeworkListTable tbody tr')
-      ];
-
-      for (const row of rows) {
-        const cells = row.querySelectorAll('td');
-
-        const link = row.querySelector(
-          'a[href^="/course/homework/"]'
-        );
-
-        if (!link) continue;
-
-        homeworks.push({
-          course: course.name,
-          name: link.textContent.trim(),
-          open: cells[4]?.textContent.trim() || '',
-          deadline: cells[5]?.textContent.trim() || '',
-          submitted: !!cells[6]?.querySelector('.fa-check'),
-          url:
-            'https://eclass.tnua.edu.tw' +
-            link.getAttribute('href')
-        });
-      }
-    } catch (error) {
-      console.error(`讀取失敗：${course.name}`, error);
-    }
+[
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/13_我們與實體音樂的距離座談會",
+    "open": "09-18 00:00",
+    "deadline": "09-21 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15313"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/20_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-22 00:00",
+    "deadline": "09-25 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15345"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/19_《眾神紀》",
+    "open": "09-22 00:00",
+    "deadline": "09-25 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15346"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/19_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-22 00:00",
+    "deadline": "09-25 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15347"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/19_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-22 00:00",
+    "deadline": "09-25 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15349"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/19_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-23 00:00",
+    "deadline": "09-26 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15374"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/20_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-23 00:00",
+    "deadline": "09-26 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15376"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座：9/20_漢斯．季默傳奇音樂會《全新境界》",
+    "open": "09-23 00:00",
+    "deadline": "09-26 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15382"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "09/24-何明瑞老師",
+    "open": "09-24 15:30",
+    "deadline": "09-27 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15361"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座： 9/18_《眾神紀》",
+    "open": "09-24 00:00",
+    "deadline": "09-27 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15399"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座： 9/18_《眾神紀》",
+    "open": "09-24 00:00",
+    "deadline": "09-27 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15400"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "自選講座： 9/18_《眾神紀》",
+    "open": "09-24 00:00",
+    "deadline": "09-27 23:59",
+    "submitted": true,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15401"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "10/01-林心恬老師",
+    "open": "10-01 15:30",
+    "deadline": "10-04 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15362"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "10/08-黃韻玲老師",
+    "open": "10-08 15:30",
+    "deadline": "10-11 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15363"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "10/15-嚴宗凌老師",
+    "open": "10-15 15:30",
+    "deadline": "10-18 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15364"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "10/22-陳芍安老師",
+    "open": "10-22 15:30",
+    "deadline": "10-25 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15365"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "10/29-Mia老師",
+    "open": "10-29 15:30",
+    "deadline": "11-01 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15366"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "11/05-Oliver老師",
+    "open": "11-05 15:30",
+    "deadline": "11-08 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15367"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "11/12-盧思蒨老師",
+    "open": "11-12 15:30",
+    "deadline": "11-15 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15368"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "11/19-邱絜靖老師",
+    "open": "11-19 15:30",
+    "deadline": "11-22 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15370"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "11/26-蔡周翰老師",
+    "open": "11-26 15:30",
+    "deadline": "11-29 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15371"
+  },
+  {
+    "course": "專題講座Seminar",
+    "name": "12/10-John Chowning老師",
+    "open": "12-10 15:30",
+    "deadline": "12-13 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15372"
+  },
+  {
+    "course": "器樂演奏藝術ⅠThe Art of Instrumental Performance Ⅰ",
+    "name": "管弦樂作品聆聽與樂評",
+    "open": "09-17 00:00",
+    "deadline": "09-24 10:30",
+    "submitted": true,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15289"
+  },
+  {
+    "course": "器樂演奏藝術ⅠThe Art of Instrumental Performance Ⅰ",
+    "name": "器樂習作—弦樂獨奏",
+    "open": "09-17 00:00",
+    "deadline": "10-01 23:59",
+    "submitted": true,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15285"
+  },
+  {
+    "course": "器樂演奏藝術ⅠThe Art of Instrumental Performance Ⅰ",
+    "name": "器樂習作—管樂獨奏",
+    "open": "09-17 00:00",
+    "deadline": "12-03 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15286"
+  },
+  {
+    "course": "器樂演奏藝術ⅠThe Art of Instrumental Performance Ⅰ",
+    "name": "文本導讀簡報",
+    "open": "09-17 00:00",
+    "deadline": "12-17 23:59",
+    "submitted": false,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15284"
+  },
+  {
+    "course": "錄音製作導論Introduction to Audio Recording",
+    "name": "錄音製作導論_第二週作業_學生週記",
+    "open": "09-18 00:00",
+    "deadline": "09-24 23:00",
+    "submitted": true,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15318"
+  },
+  {
+    "course": "錄音製作導論Introduction to Audio Recording",
+    "name": "錄音製作導論_第二週作業_錄製你的學長姐",
+    "open": "09-18 00:00",
+    "deadline": "09-24 23:30",
+    "submitted": true,
+    "url": "https://eclass.tnua.edu.tw/course/homework/15317"
   }
-
-  const json = JSON.stringify(homeworks, null, 2);
-
-  console.log(`✅ 完成，共 ${homeworks.length} 個作業`);
-  console.log(json);
-
-  try {
-    await navigator.clipboard.writeText(json);
-    console.log('📋 JSON 已自動複製！');
-    alert(`完成！共 ${homeworks.length} 個作業，資料已複製。`);
-  } catch {
-    console.log('⚠️ 無法自動複製，請從上方 JSON 手動複製。');
-    alert(`完成！共 ${homeworks.length} 個作業。`);
-  }
-})();
+]
