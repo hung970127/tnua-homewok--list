@@ -1,1 +1,71 @@
-[]
+(async () => {
+  console.log('📚 正在抓取所有課程作業...');
+
+  const courses = [
+    ...new Map(
+      [...document.querySelectorAll('a[href^="/course/"]')]
+        .filter(a => /^\/course\/\d+$/.test(a.getAttribute('href')))
+        .map(a => [
+          a.getAttribute('href').split('/').pop(),
+          {
+            id: a.getAttribute('href').split('/').pop(),
+            name: a.textContent.trim()
+          }
+        ])
+    ).values()
+  ].filter(c => c.name);
+
+  const homeworks = [];
+
+  for (const course of courses) {
+    console.log(`讀取：${course.name}`);
+
+    try {
+      const response = await fetch(`/course/homeworkList/${course.id}`);
+      const html = await response.text();
+
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+
+      const rows = [
+        ...doc.querySelectorAll('#homeworkListTable tbody tr')
+      ];
+
+      for (const row of rows) {
+        const cells = row.querySelectorAll('td');
+
+        const link = row.querySelector(
+          'a[href^="/course/homework/"]'
+        );
+
+        if (!link) continue;
+
+        homeworks.push({
+          course: course.name,
+          name: link.textContent.trim(),
+          open: cells[4]?.textContent.trim() || '',
+          deadline: cells[5]?.textContent.trim() || '',
+          submitted: !!cells[6]?.querySelector('.fa-check'),
+          url:
+            'https://eclass.tnua.edu.tw' +
+            link.getAttribute('href')
+        });
+      }
+    } catch (error) {
+      console.error(`讀取失敗：${course.name}`, error);
+    }
+  }
+
+  const json = JSON.stringify(homeworks, null, 2);
+
+  console.log(`✅ 完成，共 ${homeworks.length} 個作業`);
+  console.log(json);
+
+  try {
+    await navigator.clipboard.writeText(json);
+    console.log('📋 JSON 已自動複製！');
+    alert(`完成！共 ${homeworks.length} 個作業，資料已複製。`);
+  } catch {
+    console.log('⚠️ 無法自動複製，請從上方 JSON 手動複製。');
+    alert(`完成！共 ${homeworks.length} 個作業。`);
+  }
+})();
