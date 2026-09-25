@@ -77,16 +77,34 @@ if (window.opener) {
     'https://hung970127.github.io'
   );
 
-  alert(
-    `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。`
-  );
+  const returnButton = document.createElement('button');
 
- window.opener.focus();
+  returnButton.textContent =
+    `✓ 同步完成｜${homeworks.length} 個作業｜返回 Homework List`;
 
-setTimeout(() => {
-  window.location.href =
-    'https://hung970127.github.io/tnua-homewok--list/';
-}, 300);
+  Object.assign(returnButton.style, {
+    position: 'fixed',
+    top: '20px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: '999999',
+    padding: '14px 22px',
+    border: 'none',
+    borderRadius: '12px',
+    background: '#111',
+    color: '#fff',
+    fontSize: '15px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    boxShadow: '0 8px 30px rgba(0,0,0,.18)'
+  });
+
+  returnButton.addEventListener('click', () => {
+    window.opener.focus();
+    window.close();
+  });
+
+  document.body.appendChild(returnButton);
 
 } else {
   alert(
