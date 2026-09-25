@@ -448,7 +448,6 @@ function updateButtons() {
   });
 }
 
-<script>
 function loadHomeworks(homeworks) {
   allHomeworks = homeworks.map(hw => ({
     ...hw,
@@ -522,7 +521,6 @@ if (syncData) {
     `;
   }
 }
-<script>
 document.getElementById('connectButton').addEventListener('click', () => {
   window.open(
     'https://eclass.tnua.edu.tw/dashboard',
