@@ -246,24 +246,6 @@
     </section>
 
   </main>
-<script>
-fetch('https://eclass.tnua.edu.tw/course/homeworkList/21619', {
-  credentials: 'include'
-})
-  .then(response => {
-    console.log('HTTP 狀態：', response.status);
-    return response.text();
-  })
-  .then(html => {
-    console.log('成功取得資料');
-    console.log('資料長度：', html.length);
-    alert('測試成功！網站可以讀取新藝學園。');
-  })
-  .catch(error => {
-    console.error(error);
-    alert('測試失敗：瀏覽器阻止網站直接讀取新藝學園。');
-  });
-</script>
 
 </body>
 </html>
