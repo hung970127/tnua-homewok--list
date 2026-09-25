@@ -68,14 +68,25 @@
 
  window.TNUA_HOMEWORKS = homeworks;
 
-const data = encodeURIComponent(JSON.stringify(homeworks));
+if (window.opener) {
+  window.opener.postMessage(
+    {
+      type: 'TNUA_HOMEWORK_SYNC',
+      homeworks: homeworks
+    },
+    'https://hung970127.github.io'
+  );
 
-const homeworkListURL =
-  'https://hung970127.github.io/tnua-homewok--list/?sync=' + data;
+  alert(
+    `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。`
+  );
 
-alert(
-  `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。\n\n接下來會回到 TNUA Homework List。`
-);
+  window.close();
 
-window.location.href = homeworkListURL;
+} else {
+  alert(
+    '找不到 TNUA Homework List。\n請從 TNUA Homework List 按「連結新藝學園」後再同步。'
+  );
+}
+
 })();
