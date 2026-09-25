@@ -1148,7 +1148,11 @@ readSyncDataFromURL();
 const lastSync = localStorage.getItem('tnuaLastSync');
 
 if (lastSync) {
-  document.getElementById('welcomeCard').style.display = 'none';
+  const welcomeCard = document.getElementById('welcomeCard');
+
+  if (welcomeCard) {
+    welcomeCard.style.display = 'none';
+  }
 
   const syncStatus = document.getElementById('syncStatus');
   const lastSyncText = document.getElementById('lastSyncText');
