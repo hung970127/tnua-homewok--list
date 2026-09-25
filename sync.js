@@ -77,34 +77,67 @@ if (window.opener) {
     'https://hung970127.github.io'
   );
 
-  const returnButton = document.createElement('button');
+  const overlay = document.createElement('div');
 
-  returnButton.textContent =
-    `✓ 同步完成｜${homeworks.length} 個作業｜返回 Homework List`;
+overlay.innerHTML = `
+  <div style="
+    background: white;
+    padding: 28px 32px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0,0,0,.25);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  ">
+    <div style="
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+    ">
+      ✓ 同步完成
+    </div>
 
-  Object.assign(returnButton.style, {
-    position: 'fixed',
-    top: '20px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: '999999',
-    padding: '14px 22px',
-    border: 'none',
-    borderRadius: '12px',
-    background: '#111',
-    color: '#fff',
-    fontSize: '15px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    boxShadow: '0 8px 30px rgba(0,0,0,.18)'
-  });
+    <div style="
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 20px;
+    ">
+      已同步 ${homeworks.length} 個作業
+    </div>
 
-  returnButton.addEventListener('click', () => {
+    <button id="tnuaReturnButton" style="
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      background: #111;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    ">
+      返回 Homework List
+    </button>
+  </div>
+`;
+
+Object.assign(overlay.style, {
+  position: 'fixed',
+  inset: '0',
+  zIndex: '2147483647',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'rgba(0,0,0,.35)'
+});
+
+document.documentElement.appendChild(overlay);
+
+overlay
+  .querySelector('#tnuaReturnButton')
+  .addEventListener('click', () => {
     window.opener.focus();
     window.close();
   });
-
-  document.body.appendChild(returnButton);
 
 } else {
   alert(
