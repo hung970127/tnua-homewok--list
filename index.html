@@ -789,9 +789,15 @@ document.getElementById('updateButton').addEventListener('click', () => {
     '_blank'
   );
 
-  setTimeout(() => {
-    alert('已開啟新藝學園！\n\n請在 Safari 喜好項目列點擊「同步新藝學園」。');
-  }, 300);
+document.getElementById('updateButton').addEventListener('click', () => {
+  const eclassWindow = window.open(
+    'https://eclass.tnua.edu.tw/dashboard',
+    '_blank'
+  );
+
+  if (eclassWindow) {
+    eclassWindow.focus();
+  }
 });
 </script>
   
