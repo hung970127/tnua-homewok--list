@@ -426,6 +426,31 @@ background: transparent;
 #connectButton:hover {
   opacity: 0.8;
 }
+
+/* 第一次使用按鈕 */
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.first-use-button {
+  padding: 9px 14px;
+  border: 1px solid #e4e4e1;
+  border-radius: 9px;
+  background: white;
+  color: #333;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.first-use-button:hover {
+  background: #f1f1ef;
+}
     
   </style>
 </head>
@@ -435,12 +460,24 @@ background: transparent;
 
   <main class="container">
 
-    <header>
-      <h1>TNUA Homework List</h1>
+   <header>
 
-      <div class="subtitle">
-        <p>把新藝學園的作業，整理在這裡。</p>
-      </div>
+  <div class="header-top">
+
+    <h1>TNUA Homework List</h1>
+
+    <button
+      id="firstUseButton"
+      class="first-use-button"
+    >
+      第一次使用
+    </button>
+
+  </div>
+
+  <div class="subtitle">
+    <p>把新藝學園的作業，整理在這裡。</p>
+  </div>
 
 <div id="syncStatus" style="display: none;">
   <span id="lastSyncText">上次同步：--</span>
@@ -1138,6 +1175,25 @@ document.getElementById('updateButton').addEventListener('click', () => {
   if (eclassWindow) {
     eclassWindow.focus();
   }
+});
+
+// ================================
+// 第一次使用教學
+// ================================
+
+const firstUseButton =
+  document.getElementById('firstUseButton');
+
+firstUseButton.addEventListener('click', () => {
+
+  alert(
+    '第一次使用教學\n\n' +
+    '① 安裝 Userscripts\n' +
+    '② 開啟 Safari 擴充功能\n' +
+    '③ 安裝 TNUA 同步工具\n\n' +
+    '完成後，就可以使用「更新作業」。'
+  );
+
 });
 </script>
   
