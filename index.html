@@ -215,46 +215,133 @@
 
     #dateFilterPanel {
   margin-top: 16px;
-  padding: 14px 16px;
+  width: 100%;
+  max-width: 390px;
+  padding: 20px;
 
   background: white;
   border: 1px solid #e8e8e5;
-  border-radius: 12px;
+  border-radius: 16px;
 
+  flex-direction: column;
+  gap: 16px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* 月份＋左右箭頭 */
+.calendar-header {
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 }
 
-.date-filter-label {
-  font-size: 13px;
+#calendarMonth {
+  font-size: 15px;
   font-weight: 600;
-  color: #777;
+  color: #222;
 }
 
-#datePicker {
-  min-width: 170px;
-  padding: 9px 12px;
+.calendar-arrow {
+  width: 34px;
+  height: 34px;
 
-  border: 1px solid #e4e4e1;
-  border-radius: 8px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
 
-  background: #f7f7f5;
-  color: #222;
+  font-size: 23px;
+  line-height: 1;
+  color: #555;
+
+  cursor: pointer;
+}
+
+.calendar-arrow:hover {
+  background: #f1f1ef;
+}
+
+/* 星期 */
+.calendar-weekdays {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  font-size: 12px;
+  color: #aaa;
+  text-align: center;
+}
+
+.calendar-weekdays span {
+  padding: 5px 0;
+}
+
+/* 日期區域 */
+#calendarDays {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #444;
 
   font-family: inherit;
   font-size: 13px;
 
   cursor: pointer;
-  outline: none;
 }
 
-#datePicker:hover {
+.calendar-day:hover {
   background: #f1f1ef;
 }
 
-#datePicker:focus {
-  border-color: #aaa;
+/* 今天 */
+.calendar-day.today {
+  background: #eeeeeb;
+  font-weight: 600;
+}
+
+/* 使用者選中的日期 */
+.calendar-day.selected {
+  background: #222;
+  color: white;
+  font-weight: 600;
+}
+
+/* 查看整月 */
+#clearDateButton {
+  align-self: flex-end;
+
+  padding: 8px 12px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #777;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+#clearDateButton:hover {
+  background: #f1f1ef;
+  color: #222;
 }
     
     #installPanel {
@@ -430,14 +517,32 @@
         <button class="filter">已完成</button>
       </div>
 
-      <div id="dateFilterPanel" style="display: none;">
-  <span class="date-filter-label">查看作業日期</span>
+     <div id="dateFilterPanel" style="display: none;">
 
-  <input
-    type="date"
-    id="datePicker"
-    aria-label="查看作業日期"
-  >
+  <div class="calendar-header">
+    <button id="prevMonth" class="calendar-arrow">‹</button>
+
+    <span id="calendarMonth"></span>
+
+    <button id="nextMonth" class="calendar-arrow">›</button>
+  </div>
+
+  <div class="calendar-weekdays">
+    <span>日</span>
+    <span>一</span>
+    <span>二</span>
+    <span>三</span>
+    <span>四</span>
+    <span>五</span>
+    <span>六</span>
+  </div>
+
+  <div id="calendarDays"></div>
+
+  <button id="clearDateButton">
+    查看整月
+  </button>
+
 </div>
       
     </header>
@@ -448,8 +553,11 @@
   </main>
 
 <script>
-let allHomeworks = [];
+llet allHomeworks = [];
 let currentFilter = 'todo';
+
+let selectedDate = null;
+let calendarDate = new Date();
 
 function parseDate(text, year = new Date().getFullYear()) {
   if (!text) return null;
@@ -527,13 +635,13 @@ function render(filter = 'todo') {
     : allHomeworks.filter(hw => hw.status === filter);
 
 // 「全部」預設顯示本月作業
+// 「全部」的日期篩選
 if (filter === 'all') {
-  const datePicker = document.getElementById('datePicker');
-  const selectedDate = datePicker.value;
 
   if (selectedDate) {
-    // 有選日期：只顯示選擇的那一天
-    const [year, month, day] = selectedDate.split('-').map(Number);
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+    const day = selectedDate.getDate();
 
     homeworks = homeworks.filter(hw => {
       const deadline = parseDate(hw.deadline, hw.year);
@@ -542,16 +650,14 @@ if (filter === 'all') {
 
       return (
         deadline.getFullYear() === year &&
-        deadline.getMonth() + 1 === month &&
+        deadline.getMonth() === month &&
         deadline.getDate() === day
       );
     });
 
   } else {
-    // 沒選日期：顯示本月所有作業
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth();
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
 
     homeworks = homeworks.filter(hw => {
       const deadline = parseDate(hw.deadline, hw.year);
@@ -559,12 +665,13 @@ if (filter === 'all') {
       if (!deadline) return false;
 
       return (
-        deadline.getFullYear() === currentYear &&
-        deadline.getMonth() === currentMonth
+        deadline.getFullYear() === year &&
+        deadline.getMonth() === month
       );
     });
   }
 }
+  
 homeworks.sort((a, b) => {
   const aDeadline = parseDate(a.deadline, a.year);
   const bDeadline = parseDate(b.deadline, b.year);
@@ -678,10 +785,81 @@ homeworks.sort((a, b) => {
   }
 }
 
-document.getElementById('datePicker').addEventListener('change', () => {
-  if (currentFilter === 'all') {
-    render('all');
+function renderCalendar() {
+  const calendarMonth = document.getElementById('calendarMonth');
+  const calendarDays = document.getElementById('calendarDays');
+
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+
+  calendarMonth.textContent = `${year} 年 ${month + 1} 月`;
+  calendarDays.innerHTML = '';
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    calendarDays.appendChild(empty);
   }
+
+  const today = new Date();
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const button = document.createElement('button');
+
+    button.className = 'calendar-day';
+    button.textContent = day;
+
+    if (
+      year === today.getFullYear() &&
+      month === today.getMonth() &&
+      day === today.getDate()
+    ) {
+      button.classList.add('today');
+    }
+
+    if (
+      selectedDate &&
+      year === selectedDate.getFullYear() &&
+      month === selectedDate.getMonth() &&
+      day === selectedDate.getDate()
+    ) {
+      button.classList.add('selected');
+    }
+
+    button.addEventListener('click', () => {
+      selectedDate = new Date(year, month, day);
+
+      renderCalendar();
+      render('all');
+    });
+
+    calendarDays.appendChild(button);
+  }
+}
+
+document.getElementById('prevMonth').addEventListener('click', () => {
+  calendarDate.setMonth(calendarDate.getMonth() - 1);
+  selectedDate = null;
+
+  renderCalendar();
+  render('all');
+});
+
+document.getElementById('nextMonth').addEventListener('click', () => {
+  calendarDate.setMonth(calendarDate.getMonth() + 1);
+  selectedDate = null;
+
+  renderCalendar();
+  render('all');
+});
+
+document.getElementById('clearDateButton').addEventListener('click', () => {
+  selectedDate = null;
+
+  renderCalendar();
+  render('all');
 });
   
 function updateButtons() {
