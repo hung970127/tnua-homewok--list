@@ -3,11 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>TNUA Homework List</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #1f1f1f;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Noto Sans TC",
+        sans-serif;
+    }
+
+    .container {
+      width: min(820px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 100px;
+    }
+
+    header {
+      margin-bottom: 45px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: -1px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #8a8a8a;
+      margin-top: 9px;
+      font-size: 15px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      border: 1px solid #e4e4e1;
+      background: white;
+      padding: 8px 14px;
+      border-radius: 100px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .filter.active {
+      background: #1f1f1f;
+      color: white;
+      border-color: #1f1f1f;
+    }
+
+    .date-section {
+      margin-top: 40px;
+    }
+
+    .date {
+      font-size: 14px;
+      font-weight: 600;
+      color: #777;
+      margin-bottom: 12px;
+    }
+
+    .homework {
+      display: block;
+      background: white;
+      border: 1px solid #e8e8e5;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 10px;
+
+      text-decoration: none;
+      color: inherit;
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .homework:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.06);
+    }
+
+    .course {
+      color: #8a8a8a;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .homework-title {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .status {
+      font-weight: 600;
+    }
+
+    .todo {
+      color: #b76e00;
+    }
+
+    .late {
+      color: #d13c3c;
+    }
+
+    .done {
+      color: #378557;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: calc(100% - 28px);
+        padding-top: 40px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+    }
+  </style>
 </head>
 
+
 <body>
-  <h1>TNUA Homework List</h1>
-  <p>我的北藝大課業總覽</p>
+
+  <main class="container">
+
+    <header>
+      <h1>TNUA Homework List</h1>
+
+      <div class="subtitle">
+        我的北藝大課業總覽
+      </div>
+
+      <div class="filters">
+        <button class="filter active">待完成</button>
+        <button class="filter">全部</button>
+        <button class="filter">已逾期</button>
+        <button class="filter">未來</button>
+        <button class="filter">已完成</button>
+      </div>
+    </header>
+
+
+    <section class="date-section">
+
+      <div class="date">
+        9 月 25 日 · 今天
+      </div>
+
+      <a
+        class="homework"
+        href="https://eclass.tnua.edu.tw/course/homework/15345"
+        target="_blank"
+      >
+
+        <div class="course">
+          專題講座 Seminar
+        </div>
+
+        <div class="homework-title">
+          作業範例：本週課程心得
+        </div>
+
+        <div class="info">
+
+          <span>
+            截止 23:59
+          </span>
+
+          <span class="status todo">
+            待完成
+          </span>
+
+        </div>
+
+      </a>
+
+    </section>
+
+
+    <section class="date-section">
+
+      <div class="date">
+        9 月 26 日 · 明天
+      </div>
+
+      <a
+        class="homework"
+        href="https://eclass.tnua.edu.tw/course/homework/15374"
+        target="_blank"
+      >
+
+        <div class="course">
+          專題講座 Seminar
+        </div>
+
+        <div class="homework-title">
+          作業範例：第二份課程作業
+        </div>
+
+        <div class="info">
+
+          <span>
+            截止 23:59
+          </span>
+
+          <span class="status todo">
+            待完成
+          </span>
+
+        </div>
+
+      </a>
+
+    </section>
+
+  </main>
+
 </body>
 </html>
