@@ -165,7 +165,23 @@
   color: #666;
 }
 
-#connectButton {
+#installButton {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  color: #222;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#installButton:hover {
+  background: #f5f5f5;
+}
+    
+    #connectButton {
   margin-top: 18px;
   padding: 12px 22px;
   border: none;
@@ -252,7 +268,11 @@
     </div>
   </div>
 
-  <button id="connectButton">
+  <button id="installButton">
+  安裝「同步新藝學園」
+</button>
+       
+       <button id="connectButton">
     連結新藝學園
   </button>
 
@@ -611,5 +631,20 @@ window.addEventListener('message', (event) => {
 });
 </script>
 
+<script>
+document.getElementById('installButton').addEventListener('click', () => {
+  alert(
+`Safari 第一次設定：
+
+1. 先將這個 TNUA Homework List 網頁加入書籤
+2. 打開 Safari 的「書籤」→「編輯書籤」
+3. 將書籤名稱改成「同步新藝學園」
+4. 下一步會再教你把書籤網址改成同步功能
+
+設定只需要做一次。`
+  );
+});
+</script>
+  
 </body>
 </html>
