@@ -471,8 +471,19 @@ function render(filter = 'todo') {
       ? [...allHomeworks]
       : allHomeworks.filter(hw => hw.status === filter);
 
- homeworks.sort((a, b) => {
-  return parseDate(a.deadline, a.year) - parseDate(b.deadline, b.year);
+homeworks.sort((a, b) => {
+  const aDeadline = parseDate(a.deadline, a.year);
+  const bDeadline = parseDate(b.deadline, b.year);
+
+  // 兩個都沒有截止日期，維持原本順序
+  if (!aDeadline && !bDeadline) return 0;
+
+  // 沒有截止日期的放到最後
+  if (!aDeadline) return 1;
+  if (!bDeadline) return -1;
+
+  // 有截止日期的，由近到遠排列
+  return aDeadline - bDeadline;
 });
   if (homeworks.length === 0) {
     list.innerHTML = `
