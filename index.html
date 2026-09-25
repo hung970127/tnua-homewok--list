@@ -522,14 +522,47 @@ if (syncData) {
     `;
   }
 }
-</script>
-
 <script>
 document.getElementById('connectButton').addEventListener('click', () => {
   window.open(
     'https://eclass.tnua.edu.tw/dashboard',
     '_blank'
   );
+});
+
+window.addEventListener('message', (event) => {
+
+  // 只接受新藝學園傳來的資料
+  if (event.origin !== 'https://eclass.tnua.edu.tw') {
+    return;
+  }
+
+  // 確認是我們的作業同步訊息
+  if (event.data?.type !== 'TNUA_HOMEWORK_SYNC') {
+    return;
+  }
+
+  const homeworks = event.data.homeworks;
+
+  if (!Array.isArray(homeworks)) {
+    return;
+  }
+
+  // 儲存在這位同學自己的瀏覽器
+  localStorage.setItem(
+    'tnuaHomeworks',
+    JSON.stringify(homeworks)
+  );
+
+  localStorage.setItem(
+    'tnuaLastSync',
+    new Date().toISOString()
+  );
+
+  // 直接更新畫面
+  loadHomeworks(homeworks);
+
+  alert(`同步成功！共 ${homeworks.length} 個作業。`);
 });
 </script>
 
