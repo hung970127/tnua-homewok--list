@@ -766,7 +766,29 @@ const lastSync = localStorage.getItem('tnuaLastSync');
 
 if (lastSync) {
   document.getElementById('welcomeCard').style.display = 'none';
+
+  const syncStatus = document.getElementById('syncStatus');
+  const lastSyncText = document.getElementById('lastSyncText');
+
+  syncStatus.style.display = 'flex';
+
+  const date = new Date(lastSync);
+
+  lastSyncText.textContent =
+    `上次同步：${date.toLocaleString('zh-TW', {
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })}`;
 }
+
+document.getElementById('updateButton').addEventListener('click', () => {
+  window.open(
+    'https://eclass.tnua.edu.tw/dashboard',
+    '_blank'
+  );
+});
 </script>
   
 </body>
