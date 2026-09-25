@@ -287,7 +287,7 @@
         <p>把新藝學園的作業，整理在一個地方。</p>
       </div>
 
-     <div class="welcome">
+     <div class="welcome" id="welcomeCard">
   <h2>開始使用</h2>
   <p>第一次使用只需要簡單設定一次。</p>
 
@@ -721,6 +721,12 @@ document.getElementById('installButton').addEventListener('click', () => {
     panel.style.display = 'none';
   }
 });
+
+const lastSync = localStorage.getItem('tnuaLastSync');
+
+if (lastSync) {
+  document.getElementById('welcomeCard').style.display = 'none';
+}
 </script>
   
 </body>
