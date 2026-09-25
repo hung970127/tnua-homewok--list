@@ -553,7 +553,7 @@
   </main>
 
 <script>
-llet allHomeworks = [];
+let allHomeworks = [];
 let currentFilter = 'todo';
 
 let selectedDate = null;
@@ -896,8 +896,10 @@ function updateButtons() {
  if (filter === 'all') {
   dateFilterPanel.style.display = 'flex';
 
-  // 每次重新進入「全部」，清除之前選的日期
-  document.getElementById('datePicker').value = '';
+  selectedDate = null;
+  calendarDate = new Date();
+
+  renderCalendar();
 } else {
   dateFilterPanel.style.display = 'none';
 }
