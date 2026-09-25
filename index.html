@@ -1178,21 +1178,30 @@ document.getElementById('updateButton').addEventListener('click', () => {
 });
 
 // ================================
-// 第一次使用教學
+// 第一次使用
 // ================================
 
-const firstUseButton =
-  document.getElementById('firstUseButton');
+document.addEventListener('DOMContentLoaded', () => {
 
-firstUseButton.addEventListener('click', () => {
+  const firstUseButton =
+    document.getElementById('firstUseButton');
 
-  alert(
-    '第一次使用教學\n\n' +
-    '① 安裝 Userscripts\n' +
-    '② 開啟 Safari 擴充功能\n' +
-    '③ 安裝 TNUA 同步工具\n\n' +
-    '完成後，就可以使用「更新作業」。'
-  );
+  if (!firstUseButton) {
+    console.error('找不到第一次使用按鈕');
+    return;
+  }
+
+  firstUseButton.addEventListener('click', () => {
+
+    alert(
+      '第一次使用教學\n\n' +
+      '① 安裝 Userscripts\n\n' +
+      '② 開啟 Safari 擴充功能\n\n' +
+      '③ 安裝 TNUA 同步工具\n\n' +
+      '完成後，就可以使用「更新作業」。'
+    );
+
+  });
 
 });
 </script>
