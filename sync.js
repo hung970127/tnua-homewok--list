@@ -81,7 +81,12 @@ if (window.opener) {
     `同步完成！\n找到 ${uniqueCourses.length} 門課程、${homeworks.length} 個作業。`
   );
 
-  window.close();
+ window.opener.focus();
+
+setTimeout(() => {
+  window.location.href =
+    'https://hung970127.github.io/tnua-homewok--list/';
+}, 300);
 
 } else {
   alert(
