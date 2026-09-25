@@ -678,6 +678,12 @@ homeworks.sort((a, b) => {
   }
 }
 
+document.getElementById('datePicker').addEventListener('change', () => {
+  if (currentFilter === 'all') {
+    render('all');
+  }
+});
+  
 function updateButtons() {
   const counts = {
     todo: allHomeworks.filter(x => x.status === 'todo').length,
