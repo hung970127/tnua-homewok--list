@@ -52,8 +52,8 @@
           id: match[1],
           course: course.name,
           name: link.textContent.trim(),
-         open: cells[2]?.textContent.trim() || '',
-deadline: cells[3]?.textContent.trim() || '',
+        open: cells[4]?.textContent.trim() || '',
+deadline: cells[5]?.textContent.trim() || '',
 year: new Date().getFullYear(),
 submitted,
           url: `https://eclass.tnua.edu.tw/course/homework/${match[1]}`
