@@ -1386,14 +1386,24 @@ document.getElementById('updateButton').addEventListener('click', () => {
 // 第一次使用
 // ================================
 
-document.getElementById('firstUseButton').onclick = function () {
+const firstUseButton =
+  document.getElementById('firstUseButton');
+
+const lastSync =
+  localStorage.getItem('tnuaLastSync');
+
+if (lastSync) {
+  firstUseButton.style.display = 'none';
+}
+
+firstUseButton.onclick = function () {
 
   alert(
     '第一次使用教學\n\n' +
     '① 安裝 Userscripts\n\n' +
     '② 開啟 Safari 擴充功能\n\n' +
     '③ 安裝 TNUA 同步工具\n\n' +
-    '完成後，就可以使用「更新作業」。'
+    '完成後，回到這個網站並同步一次作業。'
   );
 
 };
