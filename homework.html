@@ -185,13 +185,304 @@
       </div>
 
 
-      <div class="empty">
-        作業列表稍後加入
-      </div>
+     <div id="homework-list"></div>
 
     </section>
 
   </main>
+
+<script>
+
+  let allHomeworks = [];
+
+  function parseDate(text, year = new Date().getFullYear()) {
+
+    if (!text) return null;
+
+    const [md, time] = text.split(' ');
+
+    if (!md || !time) return null;
+
+    const [month, day] = md.split('-').map(Number);
+    const [hour, minute] = time.split(':').map(Number);
+
+    return new Date(
+      year,
+      month - 1,
+      day,
+      hour,
+      minute
+    );
+  }
+
+
+  function getStatus(hw) {
+
+    const now = new Date();
+
+    const open = parseDate(hw.open, hw.year);
+    const deadline = parseDate(hw.deadline, hw.year);
+
+    if (hw.submitted) return 'done';
+
+    if (open && now < open) return 'future';
+
+    if (deadline && now > deadline) return 'late';
+
+    return 'todo';
+  }
+
+
+  function formatDate(date) {
+
+    return `${date.getMonth() + 1} 月 ${date.getDate()} 日`;
+
+  }
+
+
+  function statusInfo(status) {
+
+    const map = {
+
+      todo: ['待完成', 'todo'],
+
+      late: ['已逾期', 'late'],
+
+      done: ['已完成', 'done'],
+
+      future: ['尚未開放', '']
+
+    };
+
+    return map[status];
+
+  }
+
+
+  function render() {
+
+    const list =
+      document.getElementById('homework-list');
+
+    list.innerHTML = '';
+
+
+    const homeworks =
+      allHomeworks
+        .map(hw => ({
+          ...hw,
+          status: getStatus(hw)
+        }))
+        .sort((a, b) => {
+
+          const aDeadline =
+            parseDate(a.deadline, a.year);
+
+          const bDeadline =
+            parseDate(b.deadline, b.year);
+
+          if (!aDeadline && !bDeadline) return 0;
+
+          if (!aDeadline) return 1;
+
+          if (!bDeadline) return -1;
+
+          return aDeadline - bDeadline;
+
+        });
+
+
+    if (homeworks.length === 0) {
+
+      list.innerHTML = `
+        <div class="empty">
+          尚未同步新藝學園
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    const groups = {};
+
+
+    for (const hw of homeworks) {
+
+      const deadline =
+        parseDate(hw.deadline, hw.year);
+
+      const key = deadline
+        ? `${deadline.getFullYear()}-${deadline.getMonth()}-${deadline.getDate()}`
+        : 'unknown';
+
+
+      if (!groups[key]) {
+
+        groups[key] = {
+
+          date: deadline,
+
+          homeworks: []
+
+        };
+
+      }
+
+
+      groups[key].homeworks.push(hw);
+
+    }
+
+
+    for (const group of Object.values(groups)) {
+
+      const section =
+        document.createElement('section');
+
+      section.className = 'date-section';
+
+
+      const dateTitle =
+        document.createElement('div');
+
+      dateTitle.className = 'date';
+
+      dateTitle.textContent =
+        group.date
+          ? formatDate(group.date)
+          : '未設定期限';
+
+
+      section.appendChild(dateTitle);
+
+
+      for (const hw of group.homeworks) {
+
+        const card =
+          document.createElement('a');
+
+        card.className = 'homework';
+
+        card.href = hw.url;
+
+        card.target = '_blank';
+
+
+        const [statusText, statusClass] =
+          statusInfo(hw.status);
+
+
+        const deadline =
+          parseDate(hw.deadline, hw.year);
+
+
+        const time =
+          deadline
+            ? deadline.toLocaleTimeString(
+                'zh-TW',
+                {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                }
+              )
+            : '—';
+
+
+        const course =
+          document.createElement('div');
+
+        course.className = 'course';
+
+        course.textContent = hw.course;
+
+
+        const title =
+          document.createElement('div');
+
+        title.className = 'homework-title';
+
+        title.textContent = hw.name;
+
+
+        const info =
+          document.createElement('div');
+
+        info.className = 'info';
+
+
+        const deadlineText =
+          document.createElement('span');
+
+        deadlineText.textContent =
+          `截止 ${time}`;
+
+
+        const status =
+          document.createElement('span');
+
+        status.className =
+          `status ${statusClass}`;
+
+        status.textContent =
+          statusText;
+
+
+        info.appendChild(deadlineText);
+
+        info.appendChild(status);
+
+
+        card.appendChild(course);
+
+        card.appendChild(title);
+
+        card.appendChild(info);
+
+
+        section.appendChild(card);
+
+      }
+
+
+      list.appendChild(section);
+
+    }
+
+  }
+
+
+  const saved =
+    localStorage.getItem('tnuaHomeworks');
+
+
+  if (saved) {
+
+    try {
+
+      allHomeworks =
+        JSON.parse(saved);
+
+      render();
+
+    } catch (error) {
+
+      console.error(
+        '作業資料讀取失敗：',
+        error
+      );
+
+    }
+
+  } else {
+
+    render();
+
+  }
+
+</script>
 
 </body>
 
