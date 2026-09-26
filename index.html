@@ -1389,24 +1389,28 @@ document.getElementById('updateButton').addEventListener('click', () => {
 const firstUseButton =
   document.getElementById('firstUseButton');
 
-const lastSync =
-  localStorage.getItem('tnuaLastSync');
+if (firstUseButton) {
 
-if (lastSync) {
-  firstUseButton.style.display = 'none';
+  const lastSync =
+    localStorage.getItem('tnuaLastSync');
+
+  if (lastSync) {
+    firstUseButton.style.display = 'none';
+  }
+
+  firstUseButton.addEventListener('click', function () {
+
+    alert(
+      '第一次使用教學\n\n' +
+      '① 安裝 Userscripts\n\n' +
+      '② 開啟 Safari 擴充功能\n\n' +
+      '③ 安裝 TNUA 同步工具\n\n' +
+      '完成後，回到這個網站並同步一次作業。'
+    );
+
+  });
+
 }
-
-firstUseButton.onclick = function () {
-
-  alert(
-    '第一次使用教學\n\n' +
-    '① 安裝 Userscripts\n\n' +
-    '② 開啟 Safari 擴充功能\n\n' +
-    '③ 安裝 TNUA 同步工具\n\n' +
-    '完成後，回到這個網站並同步一次作業。'
-  );
-
-};
 </script>
   
 </body>
