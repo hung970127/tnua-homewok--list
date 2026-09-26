@@ -1053,12 +1053,17 @@ if (welcomeCard) {
 
 function readSyncDataFromURL() {
 
+  console.log('=== TNUA SYNC DEBUG START ===');
+
   const hash = window.location.hash;
 
-  console.log('TNUA Sync Hash:', hash);
+  console.log('目前網址：', window.location.href);
+  console.log('目前 Hash：', hash);
 
-  if (!hash.startsWith('#sync=')) {
-    console.log('沒有找到同步資料');
+  if (!hash || !hash.startsWith('#sync=')) {
+
+    console.log('❌ 沒有找到 #sync= 資料');
+
     return;
   }
 
@@ -1068,69 +1073,138 @@ function readSyncDataFromURL() {
       hash.substring(6)
     );
 
-    const json = decodeURIComponent(
-      escape(atob(encoded))
+    console.log(
+      '✓ 找到同步資料，Base64 長度：',
+      encoded.length
     );
+
+    const binary = atob(encoded);
+
+    let percentEncoded = '';
+
+    for (let i = 0; i < binary.length; i++) {
+
+      percentEncoded +=
+        '%' +
+        binary.charCodeAt(i)
+          .toString(16)
+          .padStart(2, '0');
+
+    }
+
+    const json =
+      decodeURIComponent(percentEncoded);
+
+    console.log('✓ Base64 解碼成功');
 
     const data = JSON.parse(json);
 
-    console.log('收到同步資料：', data);
+    console.log('✓ JSON 解析成功：', data);
 
     if (
-      data.type !== 'TNUA_HOMEWORK_SYNC' ||
-      !Array.isArray(data.homeworks)
+      data.type !== 'TNUA_HOMEWORK_SYNC'
     ) {
-      console.error('同步資料格式錯誤');
+
+      console.error(
+        '❌ type 錯誤：',
+        data.type
+      );
+
+      return;
+    }
+
+    if (!Array.isArray(data.homeworks)) {
+
+      console.error(
+        '❌ homeworks 不是陣列'
+      );
+
       return;
     }
 
     const homeworks = data.homeworks;
 
+    console.log(
+      `✓ 收到 ${homeworks.length} 個作業`
+    );
+
     /*
      * 儲存作業
      */
+
     localStorage.setItem(
       'tnuaHomeworks',
       JSON.stringify(homeworks)
     );
 
+    console.log('✓ 作業已儲存');
+
     /*
-     * 更新同步時間
+     * 使用同步工具傳回的時間
      */
-    const syncTime = new Date();
+
+    const syncTime =
+      data.time
+        ? new Date(data.time)
+        : new Date();
 
     localStorage.setItem(
       'tnuaLastSync',
       syncTime.toISOString()
     );
 
+    console.log(
+      '✓ 同步時間已儲存：',
+      syncTime.toString()
+    );
+
     /*
      * 更新作業列表
      */
+
     loadHomeworks(homeworks);
 
     /*
-     * 顯示同步狀態
+     * 更新同步狀態
      */
+
     const syncStatus =
       document.getElementById('syncStatus');
 
     const lastSyncText =
       document.getElementById('lastSyncText');
 
-    syncStatus.style.display = 'flex';
+    if (syncStatus && lastSyncText) {
 
-    lastSyncText.textContent =
-      `上次同步：${syncTime.toLocaleString('zh-TW', {
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })}`;
+      syncStatus.style.display = 'flex';
+
+      lastSyncText.textContent =
+        `上次同步：${syncTime.toLocaleString(
+          'zh-TW',
+          {
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }
+        )}`;
+
+      console.log(
+        '✓ 畫面上的同步時間已更新'
+      );
+
+    } else {
+
+      console.error(
+        '❌ 找不到 syncStatus 或 lastSyncText'
+      );
+
+    }
 
     /*
-     * 清除網址中的 #sync=
+     * 清除網址中的同步資料
      */
+
     history.replaceState(
       null,
       '',
@@ -1138,29 +1212,43 @@ function readSyncDataFromURL() {
     );
 
     console.log(
-      `✓ 成功同步 ${homeworks.length} 個作業`
+      '✓ 同步完成，已清除 #sync='
     );
+
+    console.log('=== TNUA SYNC DEBUG END ===');
 
   } catch (error) {
 
     console.error(
-      '讀取同步資料失敗：',
+      '❌ 同步資料處理失敗：',
       error
     );
 
     alert(
-      '同步資料讀取失敗，請再試一次。'
+      '同步資料讀取失敗，請打開瀏覽器 Console 查看錯誤。'
     );
+
   }
+
 }
 
 
 /*
- * 等頁面載入後再讀取同步資料
+ * 頁面載入後檢查同步資料
  */
-window.addEventListener('load', () => {
+
+if (document.readyState === 'loading') {
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    readSyncDataFromURL
+  );
+
+} else {
+
   readSyncDataFromURL();
-});
+
+}
 </script>
 
 <script>
