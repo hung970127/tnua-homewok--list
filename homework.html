@@ -178,6 +178,34 @@
 .status.done {
   color: #888;
 }
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  padding: 8px 14px;
+  border: 1px solid #e4e4e1;
+  border-radius: 999px;
+  background: white;
+  color: #555;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filter:hover {
+  background: #f1f1ef;
+}
+
+.filter.active {
+  background: #1f1f1f;
+  color: white;
+  border-color: #1f1f1f;
+}
     
     @media (max-width: 600px) {
 
@@ -254,7 +282,30 @@
         這裡會顯示你的新藝學園作業。
       </div>
 
+<div class="filters">
 
+  <button class="filter active" data-filter="all">
+    全部
+  </button>
+
+  <button class="filter" data-filter="todo">
+    待完成
+  </button>
+
+  <button class="filter" data-filter="late">
+    已逾期
+  </button>
+
+  <button class="filter" data-filter="future">
+    尚未開放
+  </button>
+
+  <button class="filter" data-filter="done">
+    已完成
+  </button>
+
+</div>
+      
      <div id="homework-list"></div>
 
     </section>
@@ -264,7 +315,8 @@
 <script>
 
   let allHomeworks = [];
-
+let currentFilter = 'all';
+  
   function parseDate(text, year = new Date().getFullYear()) {
 
     if (!text) return null;
@@ -337,13 +389,20 @@
     list.innerHTML = '';
 
 
-    const homeworks =
-      allHomeworks
-        .map(hw => ({
-          ...hw,
-          status: getStatus(hw)
-        }))
-        .sort((a, b) => {
+   const homeworks =
+  allHomeworks
+    .map(hw => ({
+      ...hw,
+      status: getStatus(hw)
+    }))
+    .filter(hw => {
+      if (currentFilter === 'all') {
+        return true;
+      }
+
+      return hw.status === currentFilter;
+    })
+    .sort((a, b) => {
 
           const aDeadline =
             parseDate(a.deadline, a.year);
@@ -552,6 +611,27 @@
 
   }
 
+document.querySelectorAll('.filter').forEach(button => {
+
+  button.addEventListener('click', () => {
+
+    currentFilter =
+      button.dataset.filter;
+
+    document
+      .querySelectorAll('.filter')
+      .forEach(item => {
+        item.classList.remove('active');
+      });
+
+    button.classList.add('active');
+
+    render();
+
+  });
+
+});
+  
 </script>
 
 </body>
