@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>作業｜TNUA Homework List</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #1f1f1f;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Noto Sans TC",
+        sans-serif;
+    }
+
+    .container {
+      width: min(820px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 100px;
+    }
+
+    header {
+      margin-bottom: 45px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: -1px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #8a8a8a;
+      margin-top: 9px;
+      font-size: 15px;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 8px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .navigation a {
+      padding: 8px 14px;
+      border-radius: 100px;
+      border: 1px solid #e4e4e1;
+      background: white;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .navigation a:hover {
+      background: #f1f1ef;
+    }
+
+    .navigation a.active {
+      background: #1f1f1f;
+      color: white;
+      border-color: #1f1f1f;
+    }
+
+    .page-title {
+      margin-top: 40px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .page-description {
+      margin-top: 8px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .empty {
+      margin-top: 40px;
+      padding: 80px 20px;
+      text-align: center;
+      color: #999;
+      background: white;
+      border: 1px solid #e8e8e5;
+      border-radius: 14px;
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        width: calc(100% - 28px);
+        padding-top: 40px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+      .header-top {
+        align-items: flex-start;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="container">
+
+    <header>
+
+      <div class="header-top">
+
+        <h1>TNUA Homework List</h1>
+
+      </div>
+
+      <div class="subtitle">
+        <p>把新藝學園的作業，整理在這裡。</p>
+      </div>
+
+
+      <nav class="navigation">
+
+        <a href="index.html">
+          首頁
+        </a>
+
+        <a
+          href="homework.html"
+          class="active"
+        >
+          作業
+        </a>
+
+        <a href="calendar.html">
+          行事曆
+        </a>
+
+        <a href="settings.html">
+          設定
+        </a>
+
+      </nav>
+
+    </header>
+
+
+    <section>
+
+      <div class="page-title">
+        作業
+      </div>
+
+      <div class="page-description">
+        這裡會顯示你的新藝學園作業。
+      </div>
+
+
+      <div class="empty">
+        作業列表稍後加入
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+
+</html>
