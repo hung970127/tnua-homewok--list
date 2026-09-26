@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>使用教學｜TNUA Homework List</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f7f5;
+      color: #1f1f1f;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Noto Sans TC",
+        sans-serif;
+    }
+
+    .container {
+      width: min(820px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 70px 0 100px;
+    }
+
+    header {
+      margin-bottom: 45px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      letter-spacing: -1px;
+      font-weight: 700;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .navigation a {
+      padding: 8px 14px;
+      border-radius: 100px;
+      border: 1px solid #e4e4e1;
+      background: white;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .navigation a:hover {
+      background: #f1f1ef;
+    }
+
+    .navigation a.active {
+      background: #1f1f1f;
+      color: white;
+      border-color: #1f1f1f;
+    }
+
+    .page-title {
+      margin-top: 40px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .page-description {
+      margin-top: 8px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .step {
+      margin-top: 24px;
+      padding: 24px;
+      background: white;
+      border: 1px solid #e8e8e5;
+      border-radius: 14px;
+    }
+
+    .step-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .step p {
+      margin: 0;
+      color: #777;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .step-note {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: #f7f7f5;
+      border-radius: 9px;
+      color: #666;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .setup-button {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 11px 18px;
+      border-radius: 9px;
+      background: #222;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .setup-button:hover {
+      opacity: 0.8;
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        width: calc(100% - 28px);
+        padding-top: 40px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <main class="container">
+
+    <header>
+
+      <div class="header-top">
+
+        <h1>TNUA Homework List</h1>
+
+      </div>
+
+      <nav class="navigation">
+
+        <a href="index.html">
+          首頁
+        </a>
+
+        <a href="homework.html">
+          作業
+        </a>
+
+        <a href="calendar.html">
+          行事曆
+        </a>
+
+        <a
+          href="settings.html"
+          class="active"
+        >
+          使用教學
+        </a>
+
+      </nav>
+
+    </header>
+
+
+    <section>
+
+      <div class="page-title">
+        使用教學
+      </div>
+
+      <div class="page-description">
+        第一次使用時，依照以下步驟設定即可。
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-title">
+          ① 安裝 Userscripts
+        </div>
+
+        <p>
+          Userscripts 是讓 TNUA Homework List
+          可以在新藝學園自動執行同步工具的 Safari 擴充功能。
+        </p>
+
+        <a
+          class="setup-button"
+          href="https://apps.apple.com/tw/app/userscripts/id1463298887"
+          target="_blank"
+          rel="noopener"
+        >
+          前往 App Store 安裝
+        </a>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-title">
+          ② 開啟 Safari 擴充功能
+        </div>
+
+        <p>
+          安裝完成後，回到 Safari，
+          開啟 Userscripts 擴充功能。
+          如果 Safari 詢問是否允許它在網站上運作，請允許。
+        </p>
+
+        <div class="step-note">
+          Mac：Safari → 設定 → 擴充功能 → Userscripts → 開啟
+        </div>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-title">
+          ③ 安裝 TNUA 同步工具
+        </div>
+
+        <p>
+          開啟新藝學園後，安裝 TNUA Homework List
+          的同步工具。完成後回到首頁，執行一次同步。
+        </p>
+
+        <div class="step-note">
+          第一次同步完成後，首頁就會開始顯示你的作業。
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+
+</html>
