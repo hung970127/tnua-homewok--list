@@ -1346,29 +1346,43 @@ if (document.readyState === 'loading') {
 <script>
 // installButton 現在直接連到同步工具安裝頁，不需要額外 JavaScript
 
-const lastSync = localStorage.getItem('tnuaLastSync');
+const lastSync =
+  localStorage.getItem('tnuaLastSync');
 
 if (lastSync) {
-  const welcomeCard = document.getElementById('welcomeCard');
 
-  if (welcomeCard) {
-    welcomeCard.style.display = 'none';
+  const firstUseButton =
+    document.getElementById('firstUseButton');
+
+  if (firstUseButton) {
+    firstUseButton.style.display = 'none';
   }
 
-  const syncStatus = document.getElementById('syncStatus');
-  const lastSyncText = document.getElementById('lastSyncText');
+  const syncStatus =
+    document.getElementById('syncStatus');
 
-  syncStatus.style.display = 'flex';
+  const lastSyncText =
+    document.getElementById('lastSyncText');
 
-  const date = new Date(lastSync);
+  if (syncStatus) {
+    syncStatus.style.display = 'flex';
+  }
 
-  lastSyncText.textContent =
-    `上次同步：${date.toLocaleString('zh-TW', {
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })}`;
+  if (lastSyncText) {
+
+    const date =
+      new Date(lastSync);
+
+    lastSyncText.textContent =
+      `上次同步：${date.toLocaleString('zh-TW', {
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`;
+
+  }
+
 }
 
 document.getElementById('updateButton').addEventListener('click', () => {
