@@ -464,6 +464,72 @@ background: transparent;
   color: #222;
 }
     
+.home-section {
+  margin-top: 40px;
+}
+
+.section-title {
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+}
+
+#week-calendar,
+#today-homework {
+  background: white;
+  border: 1px solid #e8e8e5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.home-item {
+  display: block;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eeeeeb;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-item:last-child {
+  border-bottom: none;
+}
+
+.home-item:hover {
+  background: #fafaf8;
+}
+
+.home-item-date {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.home-item-course {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.home-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.home-item-time {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #777;
+}
+
+.home-empty {
+  padding: 35px 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+    
   </style>
 </head>
 
@@ -499,23 +565,26 @@ background: transparent;
   </button>
 </div>
       
-<div class="home-summary">
+<div class="home-section">
 
-  <div class="summary-title">
-    即將到期
+  <div class="section-title">
+    本週行事曆
   </div>
 
-<div id="upcoming-homework"></div>
-
-<a
-  href="homework.html"
-  class="view-all-homework"
->
-  查看全部作業 →
-</a>
+  <div id="week-calendar"></div>
 
 </div>
 
+
+<div class="home-section">
+
+  <div class="section-title">
+    今天要完成
+  </div>
+
+  <div id="today-homework"></div>
+
+</div>
   </main>
 
 <script>
@@ -706,13 +775,293 @@ function statusInfo(status) {
 
 }
   
+ function renderWeekCalendar() {
+
+  const container =
+    document.getElementById('week-calendar');
+
+  if (!container) return;
+
+  container.innerHTML = '';
+
+
+  const today =
+    new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+
+  const day =
+    today.getDay();
+
+  const mondayOffset =
+    day === 0 ? -6 : 1 - day;
+
+
+  const monday =
+    new Date(today);
+
+  monday.setDate(
+    today.getDate() + mondayOffset
+  );
+
+
+  const weekHomeworks = [];
+
+
+  for (let i = 0; i < 7; i++) {
+
+    const date =
+      new Date(monday);
+
+    date.setDate(
+      monday.getDate() + i
+    );
+
+
+    const items =
+      allHomeworks.filter(hw => {
+
+        const deadline =
+          parseDate(
+            hw.deadline,
+            hw.year
+          );
+
+        if (!deadline) return false;
+
+        return (
+          deadline.getFullYear() ===
+            date.getFullYear() &&
+
+          deadline.getMonth() ===
+            date.getMonth() &&
+
+          deadline.getDate() ===
+            date.getDate()
+        );
+
+      });
+
+
+    items.forEach(hw => {
+
+      weekHomeworks.push({
+        hw,
+        date
+      });
+
+    });
+
+  }
+
+
+  if (weekHomeworks.length === 0) {
+
+    container.innerHTML = `
+      <div class="home-empty">
+        本週沒有作業
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  weekHomeworks.forEach(item => {
+
+    const hw = item.hw;
+    const date = item.date;
+
+
+    const deadline =
+      parseDate(
+        hw.deadline,
+        hw.year
+      );
+
+
+    const card =
+      document.createElement('a');
+
+    card.className =
+      'home-item';
+
+    card.href =
+      hw.url;
+
+    card.target =
+      '_blank';
+
+
+    const dateText =
+      `${date.getMonth() + 1}/${date.getDate()}`;
+
+
+    const time =
+      deadline
+        ? deadline.toLocaleTimeString(
+            'zh-TW',
+            {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }
+          )
+        : '—';
+
+
+    card.innerHTML = `
+      <div class="home-item-date">
+        ${dateText}
+      </div>
+
+      <div class="home-item-course">
+        ${hw.course}
+      </div>
+
+      <div class="home-item-title">
+        ${hw.name}
+      </div>
+
+      <div class="home-item-time">
+        截止 ${time}
+      </div>
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+
+function renderTodayHomework() {
+
+  const container =
+    document.getElementById('today-homework');
+
+  if (!container) return;
+
+  container.innerHTML = '';
+
+
+  const today =
+    new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+
+  const todayHomeworks =
+    allHomeworks.filter(hw => {
+
+      const deadline =
+        parseDate(
+          hw.deadline,
+          hw.year
+        );
+
+      if (!deadline) return false;
+
+      return (
+        deadline.getFullYear() ===
+          today.getFullYear() &&
+
+        deadline.getMonth() ===
+          today.getMonth() &&
+
+        deadline.getDate() ===
+          today.getDate() &&
+
+        !hw.submitted
+      );
+
+    });
+
+
+  if (todayHomeworks.length === 0) {
+
+    container.innerHTML = `
+      <div class="home-empty">
+        今天沒有需要完成的作業
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  todayHomeworks.forEach(hw => {
+
+    const deadline =
+      parseDate(
+        hw.deadline,
+        hw.year
+      );
+
+
+    const card =
+      document.createElement('a');
+
+    card.className =
+      'home-item';
+
+    card.href =
+      hw.url;
+
+    card.target =
+      '_blank';
+
+
+    const time =
+      deadline
+        ? deadline.toLocaleTimeString(
+            'zh-TW',
+            {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }
+          )
+        : '—';
+
+
+    card.innerHTML = `
+      <div class="home-item-course">
+        ${hw.course}
+      </div>
+
+      <div class="home-item-title">
+        ${hw.name}
+      </div>
+
+      <div class="home-item-time">
+        截止 ${time}
+      </div>
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+  
   function loadHomeworks(homeworks) {
+
   allHomeworks = homeworks.map(hw => ({
     ...hw,
     status: getStatus(hw)
   }));
 
   renderHomeSummary();
+
+  renderWeekCalendar();
+
+  renderTodayHomework();
+
 }
 
 /// 讀取這台電腦之前同步的作業資料
