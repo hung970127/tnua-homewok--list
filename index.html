@@ -939,7 +939,18 @@ function renderTodayHomework() {
     status: getStatus(hw)
   }));
 
-  renderHomeSummary();
+  function loadHomeworks(homeworks) {
+
+  allHomeworks = homeworks.map(hw => ({
+    ...hw,
+    status: getStatus(hw)
+  }));
+
+  renderWeekCalendar();
+
+  renderTodayHomework();
+
+}
 
   renderWeekCalendar();
 
