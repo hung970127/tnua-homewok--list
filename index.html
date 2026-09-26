@@ -530,6 +530,102 @@ background: transparent;
   font-size: 14px;
 }
     
+ /* 一週行事曆 */
+
+.week-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: white;
+  border: 1px solid #e8e8e5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.week-day {
+  min-height: 150px;
+  padding: 14px 10px;
+  border-right: 1px solid #eeeeeb;
+}
+
+.week-day:last-child {
+  border-right: none;
+}
+
+.week-day-name {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 6px;
+}
+
+.week-day-number {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.week-day.today {
+  background: #f5f5f3;
+}
+
+.week-day.today .week-day-number {
+  background: #222;
+  color: white;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+}
+
+.week-homework {
+  display: block;
+  margin-top: 8px;
+  padding: 7px 6px;
+  background: #f5f5f3;
+  border-radius: 7px;
+  color: #333;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.week-homework:hover {
+  background: #eaeae7;
+}
+
+.week-homework-dot {
+  width: 5px;
+  height: 5px;
+  margin: 8px auto 0;
+  border-radius: 50%;
+  background: #777;
+}
+
+.week-empty {
+  text-align: center;
+  color: #bbb;
+  font-size: 11px;
+  margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+
+  .week-calendar {
+    min-width: 700px;
+  }
+
+  #week-calendar {
+    overflow-x: auto;
+  }
+
+  .week-day {
+    min-height: 130px;
+  }
+
+} 
+  
   </style>
 </head>
 
@@ -658,7 +754,7 @@ function statusInfo(status) {
   return map[status];
 }
 
- function renderWeekCalendar() {
+function renderWeekCalendar() {
 
   const container =
     document.getElementById('week-calendar');
@@ -689,7 +785,22 @@ function statusInfo(status) {
   );
 
 
-  const weekHomeworks = [];
+  const weekCalendar =
+    document.createElement('div');
+
+  weekCalendar.className =
+    'week-calendar';
+
+
+  const weekdays = [
+    '一',
+    '二',
+    '三',
+    '四',
+    '五',
+    '六',
+    '日'
+  ];
 
 
   for (let i = 0; i < 7; i++) {
@@ -702,7 +813,53 @@ function statusInfo(status) {
     );
 
 
-    const items =
+    const dayBox =
+      document.createElement('div');
+
+    dayBox.className =
+      'week-day';
+
+
+    // 今天
+    if (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    ) {
+
+      dayBox.classList.add('today');
+
+    }
+
+
+    // 星期
+    const dayName =
+      document.createElement('div');
+
+    dayName.className =
+      'week-day-name';
+
+    dayName.textContent =
+      `週${weekdays[i]}`;
+
+
+    // 日期
+    const dayNumber =
+      document.createElement('div');
+
+    dayNumber.className =
+      'week-day-number';
+
+    dayNumber.textContent =
+      date.getDate();
+
+
+    dayBox.appendChild(dayName);
+    dayBox.appendChild(dayNumber);
+
+
+    // 找出這一天的作業
+    const dayHomeworks =
       allHomeworks.filter(hw => {
 
         const deadline =
@@ -712,6 +869,7 @@ function statusInfo(status) {
           );
 
         if (!deadline) return false;
+
 
         return (
           deadline.getFullYear() ===
@@ -727,96 +885,67 @@ function statusInfo(status) {
       });
 
 
-    items.forEach(hw => {
+    // 沒有作業
+    if (dayHomeworks.length === 0) {
 
-      weekHomeworks.push({
-        hw,
-        date
-      });
+      const empty =
+        document.createElement('div');
+
+      empty.className =
+        'week-empty';
+
+      empty.textContent =
+        '—';
+
+      dayBox.appendChild(empty);
+
+    }
+
+
+    // 有作業
+    dayHomeworks.forEach(hw => {
+
+      const card =
+        document.createElement('a');
+
+      card.className =
+        'week-homework';
+
+      card.href =
+        hw.url;
+
+      card.target =
+        '_blank';
+
+
+      // 顯示課程名稱
+      card.textContent =
+        hw.course;
+
+
+      // 作業小圓點
+      const dot =
+        document.createElement('div');
+
+      dot.className =
+        'week-homework-dot';
+
+
+      card.appendChild(dot);
+
+      dayBox.appendChild(card);
 
     });
 
-  }
 
-
-  if (weekHomeworks.length === 0) {
-
-    container.innerHTML = `
-      <div class="home-empty">
-        本週沒有作業
-      </div>
-    `;
-
-    return;
+    weekCalendar.appendChild(dayBox);
 
   }
 
 
-  weekHomeworks.forEach(item => {
-
-    const hw = item.hw;
-    const date = item.date;
-
-
-    const deadline =
-      parseDate(
-        hw.deadline,
-        hw.year
-      );
-
-
-    const card =
-      document.createElement('a');
-
-    card.className =
-      'home-item';
-
-    card.href =
-      hw.url;
-
-    card.target =
-      '_blank';
-
-
-    const dateText =
-      `${date.getMonth() + 1}/${date.getDate()}`;
-
-
-    const time =
-      deadline
-        ? deadline.toLocaleTimeString(
-            'zh-TW',
-            {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false
-            }
-          )
-        : '—';
-
-
-    card.innerHTML = `
-      <div class="home-item-date">
-        ${dateText}
-      </div>
-
-      <div class="home-item-course">
-        ${hw.course}
-      </div>
-
-      <div class="home-item-title">
-        ${hw.name}
-      </div>
-
-      <div class="home-item-time">
-        截止 ${time}
-      </div>
-    `;
-
-
-    container.appendChild(card);
-
-  });
+  container.appendChild(
+    weekCalendar
+  );
 
 }
 
@@ -932,14 +1061,7 @@ function renderTodayHomework() {
 
 }
   
-  function loadHomeworks(homeworks) {
-
-  allHomeworks = homeworks.map(hw => ({
-    ...hw,
-    status: getStatus(hw)
-  }));
-
-  function loadHomeworks(homeworks) {
+ function loadHomeworks(homeworks) {
 
   allHomeworks = homeworks.map(hw => ({
     ...hw,
@@ -947,17 +1069,9 @@ function renderTodayHomework() {
   }));
 
   renderWeekCalendar();
-
   renderTodayHomework();
 
 }
-
-  renderWeekCalendar();
-
-  renderTodayHomework();
-
-}
-
 /// 讀取這台電腦之前同步的作業資料
 const saved = localStorage.getItem('tnuaHomeworks');
 
