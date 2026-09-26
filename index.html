@@ -48,8 +48,9 @@
 
 .navigation {
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
-  margin-top: 28px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
 }
 
@@ -663,23 +664,6 @@ background: transparent;
 
    <header>
 
-  <div class="header-top">
-
-    <h1>TNUA Homework List</h1>
-
-    <button
-      id="firstUseButton"
-      class="first-use-button"
-    >
-      第一次使用
-    </button>
-
-  </div>
-
-  <div class="subtitle">
-    <p>把新藝學園的作業，整理在這裡。</p>
-  </div>
-
 <nav class="navigation">
 
   <a
@@ -702,6 +686,23 @@ background: transparent;
   </a>
 
 </nav>
+     
+  <div class="header-top">
+
+    <h1>TNUA Homework List</h1>
+
+    <button
+      id="firstUseButton"
+      class="first-use-button"
+    >
+      第一次使用
+    </button>
+
+  </div>
+
+  <div class="subtitle">
+    <p>把新藝學園的作業，整理在這裡。</p>
+  </div>
      
 <div id="syncStatus" style="display: none;">
   <span id="lastSyncText">上次同步：--</span>
