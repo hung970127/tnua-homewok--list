@@ -322,6 +322,7 @@ html {
 
   let allHomeworks = [];
 let currentFilter = 'all';
+let hasAutoScrolled = false;
   
   function parseDate(text, year = new Date().getFullYear()) {
 
@@ -586,6 +587,44 @@ let currentFilter = 'all';
 
     }
 
+      if (!hasAutoScrolled) {
+
+      const today = new Date();
+
+      const todaySection =
+        [...document.querySelectorAll('.date-section')]
+          .find(section => {
+
+            const dateText =
+              section.querySelector('.date')?.textContent;
+
+            if (!dateText) return false;
+
+            const match =
+              dateText.match(/(\d+) 月 (\d+) 日/);
+
+            if (!match) return false;
+
+            return (
+              Number(match[1]) === today.getMonth() + 1 &&
+              Number(match[2]) === today.getDate()
+            );
+
+          });
+
+      if (todaySection) {
+
+        todaySection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        hasAutoScrolled = true;
+
+      }
+
+    }
+  
   }
 
 
