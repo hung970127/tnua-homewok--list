@@ -30,21 +30,24 @@
         sans-serif;
     }
 
-    .container {
-      width: min(820px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 70px 0 100px;
-    }
+  .container {
+  width: 820px;
+  max-width: calc(100% - 40px);
+  margin: 0 auto;
+  padding: 70px 0 100px;
+}
 
-    header {
-      margin-bottom: 45px;
-    }
+  header {
+  margin-bottom: 45px;
+  position: relative;
+}
 
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+ .header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
     h1 {
       margin: 0;
@@ -53,13 +56,15 @@
       font-weight: 700;
     }
 
-    .navigation {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 28px;
-      flex-wrap: wrap;
-    }
+.navigation {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
     .navigation a {
       padding: 8px 14px;
