@@ -204,6 +204,16 @@
       white-space: nowrap;
     }
 
+    .homework-item.submitted {
+  background: #e8f3ec;
+  color: #378557;
+}
+
+.homework-item.unsubmitted {
+  background: #fff3df;
+  color: #b76e00;
+}
+
     .homework-item:hover {
       background: #e7e7e4;
     }
@@ -635,9 +645,11 @@
       const item =
         document.createElement('a');
 
-      item.className =
-        'homework-item';
-
+    item.className =
+  `homework-item ${
+    hw.submitted ? 'submitted' : 'unsubmitted'
+  }`;
+      
       item.href =
         hw.url;
 
