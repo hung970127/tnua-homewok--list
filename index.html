@@ -621,6 +621,16 @@ background: transparent;
   line-height: 1.4;
 }
 
+    .week-homework.submitted {
+  background: #e8f3ec;
+  color: #378557;
+}
+
+.week-homework.unsubmitted {
+  background: #fff3df;
+  color: #b76e00;
+}
+
 .week-homework:hover {
   background: #eaeae7;
 }
@@ -962,8 +972,10 @@ function renderWeekCalendar() {
       const card =
         document.createElement('a');
 
-      card.className =
-        'week-homework';
+     card.className =
+  `week-homework ${
+    hw.submitted ? 'submitted' : 'unsubmitted'
+  }`;
 
       card.href =
         hw.url;
