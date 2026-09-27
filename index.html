@@ -666,18 +666,25 @@ color: white;
   background: #eaeae7;
 }
 
-.week-homework-dot {
+.week-status-dots {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+.week-status-dot {
   width: 5px;
   height: 5px;
-  margin: 8px auto 0;
   border-radius: 50%;
 }
 
-.week-homework-dot.submitted {
+.week-status-dot.submitted {
   background: #378557;
 }
 
-.week-homework-dot.unsubmitted {
+.week-status-dot.unsubmitted {
   background: #b76e00;
 }
 
@@ -962,7 +969,6 @@ function renderWeekCalendar() {
     dayBox.appendChild(dayName);
     dayBox.appendChild(dayNumber);
 
-
     // 找出這一天的作業
     const dayHomeworks =
       allHomeworks.filter(hw => {
@@ -989,7 +995,45 @@ function renderWeekCalendar() {
 
       });
 
+const statusDots =
+  document.createElement('div');
 
+statusDots.className =
+  'week-status-dots';
+
+const hasSubmitted =
+  dayHomeworks.some(hw => hw.submitted);
+
+const hasUnsubmitted =
+  dayHomeworks.some(hw => !hw.submitted);
+
+if (hasSubmitted) {
+
+  const dot =
+    document.createElement('div');
+
+  dot.className =
+    'week-status-dot submitted';
+
+  statusDots.appendChild(dot);
+}
+
+if (hasUnsubmitted) {
+
+  const dot =
+    document.createElement('div');
+
+  dot.className =
+    'week-status-dot unsubmitted';
+
+  statusDots.appendChild(dot);
+}
+
+dayBox.insertBefore(
+  statusDots,
+  dayBox.children[2]
+);
+    
     // 沒有作業
     if (dayHomeworks.length === 0) {
 
