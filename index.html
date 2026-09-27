@@ -671,7 +671,14 @@ color: white;
   height: 5px;
   margin: 8px auto 0;
   border-radius: 50%;
-  background: #777;
+}
+
+.week-homework-dot.submitted {
+  background: #378557;
+}
+
+.week-homework-dot.unsubmitted {
+  background: #b76e00;
 }
 
 .week-empty {
@@ -1027,8 +1034,10 @@ function renderWeekCalendar() {
       const dot =
         document.createElement('div');
 
-      dot.className =
-        'week-homework-dot';
+     dot.className =
+  `week-homework-dot ${
+    hw.submitted ? 'submitted' : 'unsubmitted'
+  }`;
 
 
       card.appendChild(dot);
