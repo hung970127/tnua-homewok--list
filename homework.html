@@ -368,8 +368,9 @@ html {
 
 <script>
 
-  let allHomeworks = [];
+let allHomeworks = [];
 let currentFilter = 'all';
+let currentMonth = 9;
 let hasAutoScrolled = false;
   
   function parseDate(text, year = new Date().getFullYear()) {
@@ -444,19 +445,34 @@ let hasAutoScrolled = false;
     list.innerHTML = '';
 
 
-   const homeworks =
+  const homeworks =
   allHomeworks
     .map(hw => ({
       ...hw,
       status: getStatus(hw)
     }))
     .filter(hw => {
+
+      const deadline =
+        parseDate(hw.deadline, hw.year);
+
+      // 月份篩選
+      if (
+        !deadline ||
+        deadline.getMonth() + 1 !== currentMonth
+      ) {
+        return false;
+      }
+
+      // 狀態篩選
       if (currentFilter === 'all') {
         return true;
       }
 
       return hw.status === currentFilter;
+
     })
+    
     .sort((a, b) => {
 
           const aDeadline =
@@ -713,6 +729,27 @@ document.querySelectorAll('.filter').forEach(button => {
 
     document
       .querySelectorAll('.filter')
+      .forEach(item => {
+        item.classList.remove('active');
+      });
+
+    button.classList.add('active');
+
+    render();
+
+  });
+
+});
+
+document.querySelectorAll('.month-filter').forEach(button => {
+
+  button.addEventListener('click', () => {
+
+    currentMonth =
+      Number(button.dataset.month);
+
+    document
+      .querySelectorAll('.month-filter')
       .forEach(item => {
         item.classList.remove('active');
       });
