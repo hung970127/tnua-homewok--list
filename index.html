@@ -1063,18 +1063,16 @@ function renderTodayHomework() {
 
       if (!deadline) return false;
 
-      return (
-        deadline.getFullYear() ===
-          today.getFullYear() &&
+     return (
+  deadline.getFullYear() ===
+    today.getFullYear() &&
 
-        deadline.getMonth() ===
-          today.getMonth() &&
+  deadline.getMonth() ===
+    today.getMonth() &&
 
-        deadline.getDate() ===
-          today.getDate() &&
-
-      );
-
+  deadline.getDate() ===
+    today.getDate()
+);
     });
 
 
