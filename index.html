@@ -241,14 +241,19 @@ border-radius: 100px;
 }
 
 #updateButton {
-  padding: 11px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 8px;
-  background: #222;
+  border-radius: 10px;
+  background: #d97706;
   color: white;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+    .bottom-sync {
+  margin-top: 50px;
+  text-align: center;
 }
 
 #updateButton:hover {
@@ -738,10 +743,6 @@ color: white;
      
 <div id="syncStatus">
 
-  <button id="updateButton">
-    更新作業
-  </button>
-
   <span id="lastSyncText">上次同步：--</span>
 
 </div>
@@ -765,7 +766,13 @@ color: white;
 
   <div id="today-homework"></div>
 
+   <div class="bottom-sync">
+  <button id="updateButton">
+    更新作業
+  </button>
 </div>
+
+  </div>
   </main>
 
 <script>
