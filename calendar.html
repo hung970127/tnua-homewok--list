@@ -13,7 +13,7 @@
   <title>行事曆｜TNUA Homework List</title>
 
   <style>
-    
+
     * {
       box-sizing: border-box;
     }
@@ -61,7 +61,7 @@
       font-size: 15px;
     }
 
-.navigation {
+  .navigation {
   position: absolute;
   top: 0;
   right: 0;
@@ -69,8 +69,6 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-
-  z-index: 10;
 }
 
     .navigation a {
@@ -184,12 +182,12 @@
     }
 
     .day {
-  min-height: 125px;
-  padding: 10px;
-  border-right: 1px solid #eeeeeb;
-  border-bottom: 1px solid #eeeeeb;
-  overflow: hidden;
-}
+      min-height: 125px;
+      padding: 10px;
+      border-right: 1px solid #eeeeeb;
+      border-bottom: 1px solid #eeeeeb;
+      overflow: hidden;
+    }
 
     .day:nth-child(7n) {
       border-right: none;
@@ -220,21 +218,20 @@
       color: #bbb;
     }
 
- .week-homework {
-  display: block;
-  margin-top: 7px;
-  padding: 7px 8px;
-  background: #f5f5f3;
-  border-radius: 7px;
-  color: #333;
-  text-decoration: none;
-  font-size: 11px;
-  line-height: 1.4;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+    .homework-item {
+      display: block;
+      margin-top: 4px;
+      padding: 5px 7px;
+      border-radius: 7px;
+      background: #f1f1ef;
+      color: #444;
+      text-decoration: none;
+      font-size: 12px;
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     .homework-item.submitted {
   background: #e8f3ec;
@@ -302,7 +299,7 @@
 
 <nav class="navigation">
 
-      <a href="index.html">
+        <a href="index.html">
           首頁
         </a>
 
@@ -370,7 +367,7 @@
 
       </div>
 
-      <div class="calendar-legend">
+        <div class="calendar-legend">
 
   <span class="legend-item">
     <span class="legend-dot submitted"></span>
@@ -382,7 +379,7 @@
     未繳交
   </span>
 
-</div>
+   </div>
 
       <div class="calendar">
 
