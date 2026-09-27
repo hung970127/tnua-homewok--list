@@ -80,12 +80,23 @@
       background: #f1f1ef;
     }
 
-    .navigation a.active {
-      background: #1f1f1f;
-      color: white;
-      border-color: #1f1f1f;
-    }
+  .navigation a[href="settings.html"] {
+  background: #d97706;
+  color: white;
+  border-color: #d97706;
+  font-weight: 600;
+}
 
+.navigation a[href="settings.html"]:hover {
+  background: #b45309;
+  border-color: #b45309;
+}
+
+.navigation a[href="settings.html"].active {
+  background: #b45309;
+  color: white;
+  border-color: #b45309;
+}
     .page-title {
       margin-top: 40px;
       font-size: 24px;
