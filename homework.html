@@ -444,6 +444,57 @@ let hasAutoScrolled = false;
 
     list.innerHTML = '';
 
+  // 第一次進入作業頁時，
+  // 自動選擇今天或未來最近有作業的月份
+  if (!hasAutoScrolled && allHomeworks.length > 0) {
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let nearestDate = null;
+
+    for (const hw of allHomeworks) {
+
+      const deadline =
+        parseDate(hw.deadline, hw.year);
+
+      if (!deadline) continue;
+
+      const date = new Date(deadline);
+      date.setHours(0, 0, 0, 0);
+
+      if (
+        date >= today &&
+        (
+          nearestDate === null ||
+          date < nearestDate
+        )
+      ) {
+        nearestDate = date;
+      }
+
+    }
+
+    if (nearestDate) {
+
+      currentMonth =
+        nearestDate.getMonth() + 1;
+
+      document
+        .querySelectorAll('.month-filter')
+        .forEach(button => {
+
+          button.classList.toggle(
+            'active',
+            Number(button.dataset.month) === currentMonth
+          );
+
+        });
+
+    }
+
+  }
+    
 
   const homeworks =
   allHomeworks
