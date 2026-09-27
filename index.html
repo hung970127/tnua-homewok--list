@@ -559,6 +559,16 @@ background: transparent;
   color: #999;
   font-size: 14px;
 }
+
+    .home-item.submitted {
+  background: #e8f3ec;
+  color: #378557;
+}
+
+.home-item.unsubmitted {
+  background: #fff3df;
+  color: #b76e00;
+}
     
  /* 一週行事曆 */
 
@@ -1083,8 +1093,10 @@ function renderTodayHomework() {
     const card =
       document.createElement('a');
 
-    card.className =
-      'home-item';
+   card.className =
+  `home-item ${
+    hw.submitted ? 'submitted' : 'unsubmitted'
+  }`;
 
     card.href =
       hw.url;
