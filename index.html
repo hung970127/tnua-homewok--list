@@ -593,6 +593,37 @@ background: transparent;
     
  /* 一週行事曆 */
 
+.week-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #777;
+}
+
+.week-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.week-legend-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.week-legend-dot.submitted {
+  background: #378557;
+}
+
+.week-legend-dot.unsubmitted {
+  background: #b76e00;
+}
+    
 .week-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
