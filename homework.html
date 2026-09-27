@@ -472,7 +472,11 @@ let hasAutoScrolled = false;
     }
 
 
- let todaySection = null;
+ let targetSection = null;
+let targetDate = null;
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 for (const group of Object.values(groups)) {
 
@@ -480,6 +484,24 @@ for (const group of Object.values(groups)) {
     document.createElement('section');
       section.className = 'date-section';
 
+  if (group.date) {
+
+  const groupDate = new Date(group.date);
+  groupDate.setHours(0, 0, 0, 0);
+
+  if (groupDate >= today) {
+
+    if (
+      targetDate === null ||
+      groupDate < targetDate
+    ) {
+      targetDate = groupDate;
+      targetSection = section;
+    }
+
+  }
+
+}
 
       const dateTitle =
         document.createElement('div');
@@ -587,7 +609,22 @@ for (const group of Object.values(groups)) {
       list.appendChild(section);
 
     }
-  
+
+if (!hasAutoScrolled && targetSection) {
+
+  setTimeout(() => {
+
+    window.scrollTo({
+      top: targetSection.offsetTop - 30,
+      behavior: 'smooth'
+    });
+
+    hasAutoScrolled = true;
+
+  }, 100);
+
+}
+    
   }
 
 
