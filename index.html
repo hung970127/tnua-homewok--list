@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>行事曆｜TNUA Homework List</title>
+  <title>TNUA Homework List</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -30,23 +23,17 @@
         sans-serif;
     }
 
-    .container {
-      width: min(820px, calc(100% - 40px));
-      margin: 0 auto;
-      padding: 70px 0 100px;
-    }
+  .container {
+  width: 820px;
+  max-width: calc(100% - 40px);
+  margin: 0 auto;
+  padding: 70px 0 100px;
+}
 
   header {
   margin-bottom: 45px;
   position: relative;
 }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
 
     h1 {
       margin: 0;
@@ -55,13 +42,14 @@
       font-weight: 700;
     }
 
-    .subtitle {
-      color: #8a8a8a;
-      margin-top: 9px;
-      font-size: 15px;
-    }
+    ..subtitle {
+  color: #8a8a8a;
+  margin-top: 9px;
+  font-size: 15px;
+  text-align: center;
+}
 
-  .navigation {
+.navigation {
   position: absolute;
   top: 0;
   right: 0;
@@ -71,223 +59,614 @@
   flex-wrap: wrap;
 }
 
-    .navigation a {
-      padding: 8px 14px;
-      border-radius: 100px;
+.navigation a {
+  padding: 8px 14px;
+border-radius: 100px;
+  border: 1px solid #e4e4e1;
+  background: white;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.navigation a:hover {
+  background: #f1f1ef;
+}
+
+.navigation a.active {
+  background: #1f1f1f;
+  color: white;
+  border-color: #1f1f1f;
+}
+    
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
       border: 1px solid #e4e4e1;
       background: white;
-      color: #333;
-      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 100px;
       font-size: 14px;
+      cursor: pointer;
     }
 
-    .navigation a:hover {
-      background: #f1f1ef;
-    }
-
-    .navigation a.active {
+    .filter.active {
       background: #1f1f1f;
       color: white;
       border-color: #1f1f1f;
     }
 
-    .page-title {
+    .date-section {
       margin-top: 40px;
-      font-size: 24px;
-      font-weight: 600;
     }
 
-    .page-description {
-      margin-top: 8px;
-      color: #888;
+    .date {
       font-size: 14px;
-    }
-
-    .calendar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 30px;
-      margin-bottom: 16px;
-    }
-
-    .month-title {
-      font-size: 22px;
       font-weight: 600;
+      color: #777;
+      margin-bottom: 12px;
     }
 
-    .month-button {
-      width: 36px;
-      height: 36px;
-      border: 1px solid #e4e4e1;
-      border-radius: 10px;
-      background: white;
-      color: #333;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    .month-button:hover {
-      background: #f1f1ef;
-    }
-
-.calendar-legend {
-  display: flex;
-  justify-content: flex-end;
-  gap: 16px;
-  margin-bottom: 12px;
-  font-size: 13px;
-  color: #777;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.legend-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-}
-
-.legend-dot.submitted {
-  background: #378557;
-}
-
-.legend-dot.unsubmitted {
-  background: #b76e00;
-}
-    
-    .calendar {
+    .homework {
+      display: block;
       background: white;
       border: 1px solid #e8e8e5;
-      border-radius: 16px;
-      overflow: hidden;
-    }
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 10px;
 
-    .weekdays,
-    .days {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-    }
-
-    .weekday {
-      padding: 13px 8px;
-      text-align: center;
-      font-size: 13px;
-      color: #999;
-      border-bottom: 1px solid #eeeeeb;
-    }
-
-    .day {
-      min-height: 125px;
-      padding: 10px;
-      border-right: 1px solid #eeeeeb;
-      border-bottom: 1px solid #eeeeeb;
-      overflow: hidden;
-    }
-
-    .day:nth-child(7n) {
-      border-right: none;
-    }
-
-    .day-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 5px;
-    }
-
-    .day.today .day-number {
-      background: #1f1f1f;
-      color: white;
-      border-radius: 50%;
-    }
-
-    .day.other-month {
-      background: #fafaf8;
-    }
-
-    .day.other-month .day-number {
-      color: #bbb;
-    }
-
-    .homework-item {
-      display: block;
-      margin-top: 4px;
-      padding: 5px 7px;
-      border-radius: 7px;
-      background: #f1f1ef;
-      color: #444;
       text-decoration: none;
-      font-size: 12px;
-      line-height: 1.35;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      color: inherit;
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease;
     }
 
-    .homework-item.submitted {
-  background: #e8f3ec;
-  color: #378557;
-}
-
-.homework-item.unsubmitted {
-  background: #fff3df;
-  color: #b76e00;
-}
-
-    .homework-item:hover {
-      background: #e7e7e4;
+    .homework:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.06);
     }
 
-    .homework-time {
-      color: #999;
-      margin-right: 4px;
+    .course {
+      color: #8a8a8a;
+      font-size: 13px;
+      margin-bottom: 7px;
     }
 
-    .empty {
-      padding: 60px 20px;
-      text-align: center;
-      color: #999;
+    .homework-title {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.5;
     }
 
-    @media (max-width: 700px) {
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: #777;
+    }
 
+    .status {
+      font-weight: 600;
+    }
+
+    .todo {
+      color: #b76e00;
+    }
+
+    .late {
+      color: #d13c3c;
+    }
+
+    .done {
+      color: #378557;
+    }
+
+    @media (max-width: 600px) {
       .container {
-        width: calc(100% - 24px);
+        width: calc(100% - 28px);
         padding-top: 40px;
       }
 
       h1 {
         font-size: 29px;
       }
-
-      .day {
-        min-height: 90px;
-        padding: 6px;
-      }
-
-      .day-number {
-        width: 24px;
-        height: 24px;
-      }
-
-      .homework-item {
-        font-size: 11px;
-        padding: 4px 5px;
-      }
-
     }
+ .welcome {
+  margin-top: 48px;
+  padding: 36px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  text-align: center;
+}
 
+.welcome h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+
+.welcome > p {
+  color: #666;
+}
+
+#installButton {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  color: #222;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#installButton:hover {
+  background: #f5f5f5;
+}
+
+#syncStatus {
+  margin: 20px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+    
+#lastSyncText {
+  font-size: 13px;
+  color: #888;
+}
+
+#updateButton {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#updateButton:hover {
+  opacity: 0.85;
+}
+
+    #dateFilterPanel {
+  margin-top: 16px;
+  width: 100%;
+  max-width: none;
+  padding: 20px;
+
+  background: white;
+  border: 1px solid #e8e8e5;
+  border-radius: 16px;
+
+  flex-direction: column;
+  gap: 16px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* 月份＋左右箭頭 */
+.calendar-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#calendarMonth {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+.calendar-arrow {
+  width: 34px;
+  height: 34px;
+
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+
+  font-size: 23px;
+  line-height: 1;
+  color: #555;
+
+  cursor: pointer;
+}
+
+.calendar-arrow:hover {
+  background: #f1f1ef;
+}
+
+/* 星期 */
+.calendar-weekdays {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  font-size: 12px;
+  color: #aaa;
+  text-align: center;
+}
+
+.calendar-weekdays span {
+  padding: 5px 0;
+}
+
+/* 日期區域 */
+#calendarDays {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  width: 36px;
+  height: 36px;
+  justify-self: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+border-radius: 8px;
+
+background: transparent;
+  color: #444;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.calendar-day:hover {
+  background: #f1f1ef;
+}
+
+/* 今天 */
+.calendar-day.today {
+  background: #eeeeeb;
+  font-weight: 600;
+}
+
+/* 使用者選中的日期 */
+.calendar-day.selected {
+  background: #222;
+  color: white;
+  font-weight: 600;
+}
+
+/* 有作業的日期 */
+.calendar-day.has-homework {
+  position: relative;
+}
+
+.calendar-day.has-homework::after {
+  content: "";
+  position: absolute;
+
+  width: 4px;
+  height: 4px;
+
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+  background: #888;
+}
+
+/* 被選中的日期，小圓點改成白色 */
+.calendar-day.selected.has-homework::after {
+  background: white;
+}
+    
+/* 查看整月 */
+#clearDateButton {
+  align-self: flex-end;
+
+  padding: 8px 12px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: #777;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+#clearDateButton:hover {
+  background: #f1f1ef;
+  color: #222;
+}
+    
+    #installPanel {
+  margin-top: 16px;
+  padding: 20px;
+  background: #f7f7f5;
+  border: 1px solid #e8e8e5;
+  border-radius: 12px;
+  text-align: center;
+}
+
+#installPanel p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.bookmarklet {
+  display: inline-block;
+  padding: 11px 18px;
+  background: #ffffff;
+  border: 1px solid #ddddda;
+  border-radius: 9px;
+  color: #222;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.bookmarklet:hover {
+  background: #f1f1ef;
+}
+
+#installPanel .install-hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #999;
+}
+    
+    #connectButton {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #111;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#connectButton:hover {
+  opacity: 0.8;
+}
+
+/* 第一次使用按鈕 */
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.first-use-button {
+  padding: 9px 14px;
+  border: 1px solid #e4e4e1;
+  border-radius: 9px;
+  background: white;
+  color: #333;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.first-use-button:hover {
+  background: #f1f1ef;
+}
+
+.view-all-homework {
+  display: block;
+  margin-top: 18px;
+  color: #777;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.view-all-homework:hover {
+  color: #222;
+}
+    
+.home-section {
+  margin-top: 40px;
+}
+
+.section-title {
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #222;
+}
+
+#week-calendar,
+#today-homework {
+  background: white;
+  border: 1px solid #e8e8e5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.home-item {
+  display: block;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eeeeeb;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-item:last-child {
+  border-bottom: none;
+}
+
+.home-item:hover {
+  background: #fafaf8;
+}
+
+.home-item-date {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.home-item-course {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.home-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.home-item-time {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #777;
+}
+
+.home-empty {
+  padding: 35px 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+    
+ /* 一週行事曆 */
+
+.week-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: white;
+  border: 1px solid #e8e8e5;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.week-day {
+  min-height: 150px;
+  padding: 14px 10px;
+  border-right: 1px solid #eeeeeb;
+}
+
+.week-day:last-child {
+  border-right: none;
+}
+
+.week-day-name {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 6px;
+}
+
+.week-day-number {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.week-day.today {
+  background: #fafaf8;
+}
+
+.week-day.today .week-day-number {
+  background: #e8e8e5;
+  color: #222;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+}
+
+.week-homework {
+  display: block;
+  margin-top: 8px;
+  padding: 7px 6px;
+  background: #f5f5f3;
+  border-radius: 7px;
+  color: #333;
+  text-decoration: none;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+    .week-homework.submitted {
+  background: #e8f3ec;
+  color: #378557;
+}
+
+.week-homework.unsubmitted {
+  background: #fff3df;
+  color: #b76e00;
+}
+
+.week-homework:hover {
+  background: #eaeae7;
+}
+
+.week-homework-dot {
+  width: 5px;
+  height: 5px;
+  margin: 8px auto 0;
+  border-radius: 50%;
+  background: #777;
+}
+
+.week-empty {
+  text-align: center;
+  color: #bbb;
+  font-size: 11px;
+  margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+
+  .week-calendar {
+    min-width: 700px;
+  }
+
+  #week-calendar {
+    overflow-x: auto;
+  }
+
+  .week-day {
+    min-height: 130px;
+  }
+
+} 
+  
   </style>
-
 </head>
 
 
@@ -295,357 +674,255 @@
 
   <main class="container">
 
-    <header>
+   <header>
 
 <nav class="navigation">
 
-        <a href="index.html">
-          首頁
-        </a>
+  <a
+    href="index.html"
+    class="active"
+  >
+    首頁
+  </a>
 
-        <a href="homework.html">
-          作業
-        </a>
+  <a href="homework.html">
+    作業
+  </a>
 
-        <a
-          href="calendar.html"
-          class="active"
-        >
-          行事曆
-        </a>
+  <a href="calendar.html">
+    行事曆
+  </a>
 
-        <a href="settings.html">
-          使用教學
-        </a>
+  <a href="settings.html">
+    使用教學
+  </a>
 
-      </nav>
+</nav>
+     
+  <div class="header-top">
+
+    <h1>TNUA Homework List</h1>
+
+  </div>
+
+ <div class="subtitle">
+
+  <button
+    id="firstUseButton"
+    class="first-use-button"
+  >
+    第一次使用
+  </button>
+</div>
+     
+<div id="syncStatus">
+
+  <button id="updateButton">
+    更新作業
+  </button>
+
+  <span id="lastSyncText">上次同步：--</span>
+
+</div>
       
-      <div class="header-top">
+<div class="home-section">
 
-        <h1>TNUA Homework List</h1>
+  <div class="section-title">
+    本週行事曆
+  </div>
 
-      </div>
+  <div id="week-calendar"></div>
 
-      <div class="subtitle">
-      
-      </div>
-
-    </header>
+</div>
 
 
-    <section>
+<div class="home-section">
 
-      <div class="page-title">
-        行事曆
-      </div>
+  <div class="section-title">
+    今日待完成
+  </div>
 
-      <div class="page-description">
-       
-      </div>
+  <div id="today-homework"></div>
 
-
-      <div class="calendar-header">
-
-        <button
-          class="month-button"
-          id="prevMonth"
-        >
-          ‹
-        </button>
-
-        <div
-          class="month-title"
-          id="monthTitle"
-        ></div>
-
-        <button
-          class="month-button"
-          id="nextMonth"
-        >
-          ›
-        </button>
-
-      </div>
-
-        <div class="calendar-legend">
-
-  <span class="legend-item">
-    <span class="legend-dot submitted"></span>
-    已繳交
-  </span>
-
-  <span class="legend-item">
-    <span class="legend-dot unsubmitted"></span>
-    未繳交
-  </span>
-
-   </div>
-
-      <div class="calendar">
-
-        <div class="weekdays">
-
-          <div class="weekday">一</div>
-          <div class="weekday">二</div>
-          <div class="weekday">三</div>
-          <div class="weekday">四</div>
-          <div class="weekday">五</div>
-          <div class="weekday">六</div>
-          <div class="weekday">日</div>
-
-        </div>
-
-        <div
-          class="days"
-          id="calendarDays"
-        ></div>
-
-      </div>
-
-    </section>
-
+</div>
   </main>
 
-
 <script>
+let allHomeworks = [];
+let currentFilter = 'todo';
 
-  let allHomeworks = [];
+let selectedDate = null;
+let calendarDate = new Date();
 
-  let currentDate = new Date();
+function parseDate(text, year = new Date().getFullYear()) {
+  if (!text) return null;
 
-  currentDate.setDate(1);
+  const [md, time] = text.split(' ');
+  if (!md || !time) return null;
 
+  const [month, day] = md.split('-').map(Number);
+  const [hour, minute] = time.split(':').map(Number);
 
-  function parseDate(
-    text,
-    year = new Date().getFullYear()
+  return new Date(year, month - 1, day, hour, minute);
+}
+
+function getStatus(hw) {
+  const now = new Date();
+  const open = parseDate(hw.open, hw.year);
+  const deadline = parseDate(hw.deadline, hw.year);
+
+  if (hw.submitted) return 'done';
+  if (open && now < open) return 'future';
+  if (deadline && now > deadline) return 'late';
+
+  return 'todo';
+}
+
+function formatDate(date) {
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  let label = '';
+
+  if (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
   ) {
-
-    if (!text) return null;
-
-    const parts = text.split(' ');
-
-    if (parts.length < 2) return null;
-
-    const [month, day] =
-      parts[0].split('-').map(Number);
-
-    const [hour, minute] =
-      parts[1].split(':').map(Number);
-
-    if (
-      !month ||
-      !day ||
-      isNaN(hour) ||
-      isNaN(minute)
-    ) {
-      return null;
-    }
-
-    return new Date(
-      year,
-      month - 1,
-      day,
-      hour,
-      minute
-    );
-
+    label = ' · 今天';
   }
 
-
-  function renderCalendar() {
-
-    const calendarDays =
-      document.getElementById('calendarDays');
-
-    const monthTitle =
-      document.getElementById('monthTitle');
-
-
-    const year =
-      currentDate.getFullYear();
-
-    const month =
-      currentDate.getMonth();
-
-
-    monthTitle.textContent =
-      `${year} 年 ${month + 1} 月`;
-
-
-    calendarDays.innerHTML = '';
-
-
-    /*
-     * 星期一 = 0
-     * 星期日 = 6
-     */
-
-    const firstDay =
-      new Date(year, month, 1).getDay();
-
-    const mondayOffset =
-      firstDay === 0
-        ? 6
-        : firstDay - 1;
-
-
-    const daysInMonth =
-      new Date(
-        year,
-        month + 1,
-        0
-      ).getDate();
-
-
-    const daysInPreviousMonth =
-      new Date(
-        year,
-        month,
-        0
-      ).getDate();
-
-
-    const today =
-      new Date();
-
-
-    /*
-     * 上個月的日期
-     */
-
-    for (
-      let i = mondayOffset - 1;
-      i >= 0;
-      i--
-    ) {
-
-      const day =
-        daysInPreviousMonth - i;
-
-      const cell =
-        createDayCell(
-          day,
-          year,
-          month - 1,
-          true
-        );
-
-      calendarDays.appendChild(cell);
-
-    }
-
-
-    /*
-     * 本月日期
-     */
-
-    for (
-      let day = 1;
-      day <= daysInMonth;
-      day++
-    ) {
-
-      const cell =
-        createDayCell(
-          day,
-          year,
-          month,
-          false
-        );
-
-      if (
-        today.getFullYear() === year &&
-        today.getMonth() === month &&
-        today.getDate() === day
-      ) {
-
-        cell.classList.add('today');
-
-      }
-
-      calendarDays.appendChild(cell);
-
-    }
-
-
-    /*
-     * 下個月日期
-     */
-
-    const totalCells =
-      Math.ceil(
-        calendarDays.children.length / 7
-      ) * 7;
-
-
-    let nextDay = 1;
-
-
-    while (
-      calendarDays.children.length < totalCells
-    ) {
-
-      const cell =
-        createDayCell(
-          nextDay,
-          year,
-          month + 1,
-          true
-        );
-
-      calendarDays.appendChild(cell);
-
-      nextDay++;
-
-    }
-
+  else if (
+    date.getFullYear() === tomorrow.getFullYear() &&
+    date.getMonth() === tomorrow.getMonth() &&
+    date.getDate() === tomorrow.getDate()
+  ) {
+    label = ' · 明天';
   }
 
+  return `${month} 月 ${day} 日${label}`;
+}
 
-  function createDayCell(
-    day,
-    year,
-    month,
-    otherMonth
-  ) {
+function statusInfo(status) {
+  const map = {
+    todo: ['待完成', 'todo'],
+    late: ['已逾期', 'late'],
+    done: ['已完成', 'done'],
+    future: ['尚未開放', '']
+  };
 
-    const cell =
-      document.createElement('div');
+  return map[status];
+}
 
-    cell.className = 'day';
+function renderWeekCalendar() {
+
+  const container =
+    document.getElementById('week-calendar');
+
+  if (!container) return;
+
+  container.innerHTML = '';
 
 
-    if (otherMonth) {
-      cell.classList.add('other-month');
-    }
+  const today =
+    new Date();
 
+  today.setHours(0, 0, 0, 0);
+
+
+  const day =
+    today.getDay();
+
+  const mondayOffset =
+    day === 0 ? -6 : 1 - day;
+
+
+  const monday =
+    new Date(today);
+
+  monday.setDate(
+    today.getDate() + mondayOffset
+  );
+
+
+  const weekCalendar =
+    document.createElement('div');
+
+  weekCalendar.className =
+    'week-calendar';
+
+
+  const weekdays = [
+    '一',
+    '二',
+    '三',
+    '四',
+    '五',
+    '六',
+    '日'
+  ];
+
+
+  for (let i = 0; i < 7; i++) {
 
     const date =
-      new Date(
-        year,
-        month,
-        day
-      );
+      new Date(monday);
+
+    date.setDate(
+      monday.getDate() + i
+    );
 
 
-    const number =
+    const dayBox =
       document.createElement('div');
 
-    number.className =
-      'day-number';
-
-    number.textContent =
-      day;
+    dayBox.className =
+      'week-day';
 
 
-    cell.appendChild(number);
+    // 今天
+    if (
+      date.getFullYear() === today.getFullYear() &&
+      date.getMonth() === today.getMonth() &&
+      date.getDate() === today.getDate()
+    ) {
+
+      dayBox.classList.add('today');
+
+    }
 
 
-    /*
-     * 找出這一天的所有作業
-     */
+    // 星期
+    const dayName =
+      document.createElement('div');
 
+    dayName.className =
+      'week-day-name';
+
+    dayName.textContent =
+      `週${weekdays[i]}`;
+
+
+    // 日期
+    const dayNumber =
+      document.createElement('div');
+
+    dayNumber.className =
+      'week-day-number';
+
+    dayNumber.textContent =
+      date.getDate();
+
+
+    dayBox.appendChild(dayName);
+    dayBox.appendChild(dayNumber);
+
+
+    // 找出這一天的作業
     const dayHomeworks =
       allHomeworks.filter(hw => {
 
@@ -656,6 +933,7 @@
           );
 
         if (!deadline) return false;
+
 
         return (
           deadline.getFullYear() ===
@@ -671,11 +949,90 @@
       });
 
 
-    /*
-     * 顯示作業
-     */
+    // 沒有作業
+    if (dayHomeworks.length === 0) {
 
+      const empty =
+        document.createElement('div');
+
+      empty.className =
+        'week-empty';
+
+      empty.textContent =
+        '—';
+
+      dayBox.appendChild(empty);
+
+    }
+
+
+    // 有作業
     dayHomeworks.forEach(hw => {
+
+      const card =
+        document.createElement('a');
+
+     card.className =
+  `week-homework ${
+    hw.submitted ? 'submitted' : 'unsubmitted'
+  }`;
+
+      card.href =
+        hw.url;
+
+      card.target =
+        '_blank';
+
+
+      // 顯示課程名稱
+      card.textContent =
+        hw.course;
+
+
+      // 作業小圓點
+      const dot =
+        document.createElement('div');
+
+      dot.className =
+        'week-homework-dot';
+
+
+      card.appendChild(dot);
+
+      dayBox.appendChild(card);
+
+    });
+
+
+    weekCalendar.appendChild(dayBox);
+
+  }
+
+
+  container.appendChild(
+    weekCalendar
+  );
+
+}
+
+function renderTodayHomework() {
+
+  const container =
+    document.getElementById('today-homework');
+
+  if (!container) return;
+
+  container.innerHTML = '';
+
+
+  const today =
+    new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+
+  const todayHomeworks =
+    allHomeworks.filter(hw => {
 
       const deadline =
         parseDate(
@@ -683,130 +1040,407 @@
           hw.year
         );
 
+      if (!deadline) return false;
 
-      const item =
-        document.createElement('a');
+      return (
+        deadline.getFullYear() ===
+          today.getFullYear() &&
 
-    item.className =
-  `homework-item ${
-    hw.submitted ? 'submitted' : 'unsubmitted'
-  }`;
-      
-      item.href =
-        hw.url;
+        deadline.getMonth() ===
+          today.getMonth() &&
 
-      item.target =
-        '_blank';
+        deadline.getDate() ===
+          today.getDate() &&
 
-
-      const time =
-        deadline
-          ? deadline.toLocaleTimeString(
-              'zh-TW',
-              {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-              }
-            )
-          : '';
-
-
-      item.innerHTML = `
-        <span class="homework-time">
-          ${time}
-        </span>
-        ${hw.name}
-      `;
-
-
-      item.title =
-        `${hw.course}｜${hw.name}`;
-
-
-      cell.appendChild(item);
+        !hw.submitted
+      );
 
     });
 
 
-    return cell;
+  if (todayHomeworks.length === 0) {
+
+    container.innerHTML = `
+      <div class="home-empty">
+        今天沒有需要完成的作業
+      </div>
+    `;
+
+    return;
 
   }
 
 
-  /*
-   * 讀取同步資料
-   */
+  todayHomeworks.forEach(hw => {
 
-  const saved =
-    localStorage.getItem(
-      'tnuaHomeworks'
+    const deadline =
+      parseDate(
+        hw.deadline,
+        hw.year
+      );
+
+
+    const card =
+      document.createElement('a');
+
+    card.className =
+      'home-item';
+
+    card.href =
+      hw.url;
+
+    card.target =
+      '_blank';
+
+
+    const time =
+      deadline
+        ? deadline.toLocaleTimeString(
+            'zh-TW',
+            {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }
+          )
+        : '—';
+
+
+    card.innerHTML = `
+      <div class="home-item-course">
+        ${hw.course}
+      </div>
+
+      <div class="home-item-title">
+        ${hw.name}
+      </div>
+
+      <div class="home-item-time">
+        截止 ${time}
+      </div>
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+}
+  
+ function loadHomeworks(homeworks) {
+
+  allHomeworks = homeworks.map(hw => ({
+    ...hw,
+    status: getStatus(hw)
+  }));
+
+  renderWeekCalendar();
+  renderTodayHomework();
+
+}
+/// 讀取這台電腦之前同步的作業資料
+const saved = localStorage.getItem('tnuaHomeworks');
+
+if (saved) {
+  try {
+    loadHomeworks(JSON.parse(saved));
+  } catch (error) {
+    console.error('本機資料讀取失敗：', error);
+  }
+
+} else {
+  allHomeworks = [];
+  renderWeekCalendar();
+  renderTodayHomework();
+}
+
+// ================================
+// 接收從新藝學園返回的同步資料
+// ================================
+
+function readSyncDataFromURL() {
+
+  console.log('=== TNUA SYNC DEBUG START ===');
+
+  const hash = window.location.hash;
+
+  console.log('目前網址：', window.location.href);
+  console.log('目前 Hash：', hash);
+
+  if (!hash || !hash.startsWith('#sync=')) {
+
+    console.log('❌ 沒有找到 #sync= 資料');
+
+    return;
+  }
+
+  try {
+
+    const encoded = decodeURIComponent(
+      hash.substring(6)
     );
 
+    console.log(
+      '✓ 找到同步資料，Base64 長度：',
+      encoded.length
+    );
 
-  if (saved) {
+    const binary = atob(encoded);
 
-    try {
+    let percentEncoded = '';
 
-      allHomeworks =
-        JSON.parse(saved);
+    for (let i = 0; i < binary.length; i++) {
 
-    } catch (error) {
+      percentEncoded +=
+        '%' +
+        binary.charCodeAt(i)
+          .toString(16)
+          .padStart(2, '0');
+
+    }
+
+    const json =
+      decodeURIComponent(percentEncoded);
+
+    console.log('✓ Base64 解碼成功');
+
+    const data = JSON.parse(json);
+
+    console.log('✓ JSON 解析成功：', data);
+
+    if (
+      data.type !== 'TNUA_HOMEWORK_SYNC'
+    ) {
 
       console.error(
-        '作業資料讀取失敗：',
-        error
+        '❌ type 錯誤：',
+        data.type
+      );
+
+      return;
+    }
+
+    if (!Array.isArray(data.homeworks)) {
+
+      console.error(
+        '❌ homeworks 不是陣列'
+      );
+
+      return;
+    }
+
+    const homeworks = data.homeworks;
+
+    console.log(
+      `✓ 收到 ${homeworks.length} 個作業`
+    );
+
+    /*
+     * 儲存作業
+     */
+
+    localStorage.setItem(
+      'tnuaHomeworks',
+      JSON.stringify(homeworks)
+    );
+
+    console.log('✓ 作業已儲存');
+
+    /*
+     * 使用同步工具傳回的時間
+     */
+
+    const syncTime =
+      data.time
+        ? new Date(data.time)
+        : new Date();
+
+    localStorage.setItem(
+      'tnuaLastSync',
+      syncTime.toISOString()
+    );
+
+    console.log(
+      '✓ 同步時間已儲存：',
+      syncTime.toString()
+    );
+
+    /*
+     * 更新作業列表
+     */
+
+    loadHomeworks(homeworks);
+
+    /*
+     * 更新同步狀態
+     */
+
+    const syncStatus =
+      document.getElementById('syncStatus');
+
+    const lastSyncText =
+      document.getElementById('lastSyncText');
+
+    if (syncStatus && lastSyncText) {
+
+      syncStatus.style.display = 'flex';
+
+      lastSyncText.textContent =
+        `上次同步：${syncTime.toLocaleString(
+          'zh-TW',
+          {
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }
+        )}`;
+
+      console.log(
+        '✓ 畫面上的同步時間已更新'
+      );
+
+    } else {
+
+      console.error(
+        '❌ 找不到 syncStatus 或 lastSyncText'
       );
 
     }
 
+    /*
+     * 清除網址中的同步資料
+     */
+
+    history.replaceState(
+      null,
+      '',
+      window.location.pathname
+    );
+
+    console.log(
+      '✓ 同步完成，已清除 #sync='
+    );
+
+    console.log('=== TNUA SYNC DEBUG END ===');
+
+  } catch (error) {
+
+    console.error(
+      '❌ 同步資料處理失敗：',
+      error
+    );
+
+    alert(
+      '同步資料讀取失敗，請打開瀏覽器 Console 查看錯誤。'
+    );
+
   }
 
-
-  /*
-   * 上一個月
-   */
-
-  document
-    .getElementById('prevMonth')
-    .addEventListener(
-      'click',
-      () => {
-
-        currentDate.setMonth(
-          currentDate.getMonth() - 1
-        );
-
-        renderCalendar();
-
-      }
-    );
+}
 
 
-  /*
-   * 下一個月
-   */
+/*
+ * 頁面載入後檢查同步資料
+ */
 
-  document
-    .getElementById('nextMonth')
-    .addEventListener(
-      'click',
-      () => {
+if (document.readyState === 'loading') {
 
-        currentDate.setMonth(
-          currentDate.getMonth() + 1
-        );
+  document.addEventListener(
+    'DOMContentLoaded',
+    readSyncDataFromURL
+  );
 
-        renderCalendar();
+} else {
 
-      }
-    );
+  readSyncDataFromURL();
 
-
-  renderCalendar();
-
+}
 </script>
 
-</body>
+<script>
+// installButton 現在直接連到同步工具安裝頁，不需要額外 JavaScript
 
+const lastSync =
+  localStorage.getItem('tnuaLastSync');
+
+if (lastSync) {
+
+  const firstUseButton =
+    document.getElementById('firstUseButton');
+
+  if (firstUseButton) {
+    firstUseButton.style.display = 'none';
+  }
+
+  const syncStatus =
+    document.getElementById('syncStatus');
+
+  const lastSyncText =
+    document.getElementById('lastSyncText');
+
+  if (syncStatus) {
+    syncStatus.style.display = 'flex';
+  }
+
+  if (lastSyncText) {
+
+    const date =
+      new Date(lastSync);
+
+    lastSyncText.textContent =
+      `上次同步：${date.toLocaleString('zh-TW', {
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`;
+
+  }
+
+}
+
+document.getElementById('updateButton').addEventListener('click', () => {
+  const eclassWindow = window.open(
+    'https://eclass.tnua.edu.tw/dashboard',
+    '_blank'
+  );
+
+  if (eclassWindow) {
+    eclassWindow.focus();
+  }
+});
+
+// ================================
+// 第一次使用
+// ================================
+
+const firstUseButton =
+  document.getElementById('firstUseButton');
+
+if (firstUseButton) {
+
+  const lastSync =
+    localStorage.getItem('tnuaLastSync');
+
+  if (lastSync) {
+    firstUseButton.style.display = 'none';
+  }
+
+  firstUseButton.addEventListener('click', function () {
+
+    alert(
+      '第一次使用教學\n\n' +
+      '① 安裝 Userscripts\n\n' +
+      '② 開啟 Safari 擴充功能\n\n' +
+      '③ 安裝 TNUA 同步工具\n\n' +
+      '完成後，回到這個網站並同步一次作業。'
+    );
+
+  });
+
+}
+</script>
+  
+</body>
 </html>
