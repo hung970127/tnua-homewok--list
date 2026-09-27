@@ -131,6 +131,35 @@
       background: #f1f1ef;
     }
 
+.calendar-legend {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #777;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.legend-dot.submitted {
+  background: #378557;
+}
+
+.legend-dot.unsubmitted {
+  background: #b76e00;
+}
+    
     .calendar {
       background: white;
       border: 1px solid #e8e8e5;
@@ -335,6 +364,18 @@
         >
           ›
         </button>
+
+        <div class="calendar-legend">
+
+  <span class="legend-item">
+    <span class="legend-dot submitted"></span>
+    已繳交
+  </span>
+
+  <span class="legend-item">
+    <span class="legend-dot unsubmitted"></span>
+    未繳交
+  </span>
 
       </div>
 
