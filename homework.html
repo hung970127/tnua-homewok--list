@@ -216,24 +216,41 @@ html {
   flex-wrap: wrap;
 }
 
-.status {
+..status {
   padding: 4px 9px;
   border-radius: 999px;
   font-size: 12px;
-  background: #f1f1ef;
-  color: #777;
+  font-weight: 600;
 }
 
+/* 待完成 */
 .status.todo {
-  color: #444;
+  background: #fff3df;
+  color: #b76e00;
 }
 
+/* 已逾期 */
 .status.late {
-  color: #555;
+  background: #ffe5e5;
+  color: #c0392b;
 }
 
+/* 已完成 */
 .status.done {
-  color: #888;
+  background: #e8f3ec;
+  color: #378557;
+}
+
+/* 老子不做了 */
+.status.abandoned {
+  background: #f1e1e1;
+  color: #9f2f2f;
+}
+
+/* 尚未開放 */
+.status:not(.todo):not(.late):not(.done):not(.abandoned) {
+  background: #eeeeeb;
+  color: #777;
 }
 
 .filters {
