@@ -38,7 +38,7 @@
       font-weight:700;
       margin-bottom:6px;
     ">
-      TNUA Homework List
+      TNUA Hub
     </div>
 
     <div id="tnuaSyncStatus" style="
@@ -186,7 +186,7 @@
       }
 
       status.textContent =
-        `已讀取 ${homeworks.length} 個作業，正在返回 Homework List…`;
+        `已讀取 ${homeworks.length} 個作業，正在返回 TNUA Hub…`;
 
       /*
        * 將資料轉成 JSON
