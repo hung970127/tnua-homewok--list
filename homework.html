@@ -875,10 +875,15 @@ abandonButton.addEventListener('click', (event) => {
 card.innerHTML = '';
 
 card.appendChild(homeworkLink);
-card.appendChild(abandonButton);
 
-        section.appendChild(card);
+if (
+  hw.status !== 'late' &&
+  hw.status !== 'done'
+) {
+  card.appendChild(abandonButton);
+}
 
+section.appendChild(card);
       }
 
 
