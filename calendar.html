@@ -181,7 +181,7 @@
       background: white;
       border: 1px solid #e8e8e5;
       border-radius: 16px;
-     overflow: visible;
+     overflow: hidden;
     }
 
     .weekdays,
@@ -198,13 +198,14 @@
       border-bottom: 1px solid #eeeeeb;
     }
 
-    .day {
-      min-height: 125px;
-      padding: 10px;
-      border-right: 1px solid #eeeeeb;
-      border-bottom: 1px solid #eeeeeb;
-      overflow: visible;
-    }
+   .day {
+  min-height: 125px;
+  min-width: 0;
+  padding: 10px;
+  border-right: 1px solid #eeeeeb;
+  border-bottom: 1px solid #eeeeeb;
+  overflow: visible;
+}
 
     .day:nth-child(7n) {
       border-right: none;
