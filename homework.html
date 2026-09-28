@@ -162,6 +162,28 @@ html {
   background: #fafaf8;
 }
 
+.homework-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.abandon-button {
+  margin-top: 14px;
+  padding: 7px 12px;
+  border: 1px solid #e4e4e1;
+  border-radius: 8px;
+  background: #f7f7f5;
+  color: #777;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.abandon-button:hover {
+  background: #eeeeeb;
+}
+    
 .course {
   margin-bottom: 7px;
   font-size: 13px;
@@ -358,7 +380,11 @@ html {
 
 </div>
 
-<div class="month-filters">
+<button class="filter" data-filter="abandoned">
+  老子不做了
+</button>
+      
+      <div class="month-filters">
 
   <button class="month-filter" data-month="9">
     9 月
@@ -422,6 +448,10 @@ let allHomeworks = [];
 let currentFilter = 'all';
 let currentMonth = 9;
 let hasAutoScrolled = false;
+let abandonedHomeworks =
+  JSON.parse(
+    localStorage.getItem('tnuaAbandonedHomeworks') || '[]'
+  );
   
   function parseDate(text, year = new Date().getFullYear()) {
 
@@ -451,6 +481,12 @@ let hasAutoScrolled = false;
     const open = parseDate(hw.open, hw.year);
     const deadline = parseDate(hw.deadline, hw.year);
 
+if (
+  abandonedHomeworks.includes(String(hw.id))
+) {
+  return 'abandoned';
+}
+    
     if (hw.submitted) return 'done';
 
     if (open && now < open) return 'future';
@@ -478,6 +514,8 @@ let hasAutoScrolled = false;
 
       done: ['已完成', 'done'],
 
+abandoned: ['老子不做了', 'abandoned'],
+      
       future: ['尚未開放', '']
 
     };
@@ -684,15 +722,10 @@ for (const group of Object.values(groups)) {
 
       for (const hw of group.homeworks) {
 
-        const card =
-          document.createElement('a');
+       const card =
+  document.createElement('div');
 
-        card.className = 'homework';
-
-        card.href = hw.url;
-
-        card.target = '_blank';
-
+card.className = 'homework';
 
         const [statusText, statusClass] =
           statusInfo(hw.status);
@@ -758,13 +791,60 @@ for (const group of Object.values(groups)) {
 
         info.appendChild(status);
 
+        const homeworkLink =
+  document.createElement('a');
 
-        card.appendChild(course);
+homeworkLink.href = hw.url;
+homeworkLink.target = '_blank';
+homeworkLink.className = 'homework-link';
 
-        card.appendChild(title);
+homeworkLink.appendChild(course);
+homeworkLink.appendChild(title);
+homeworkLink.appendChild(info);
 
-        card.appendChild(info);
+const abandonButton =
+  document.createElement('button');
 
+abandonButton.className = 'abandon-button';
+
+if (hw.status === 'abandoned') {
+  abandonButton.textContent = '恢復';
+} else {
+  abandonButton.textContent = '老子不做了';
+}
+
+abandonButton.addEventListener('click', (event) => {
+
+  event.stopPropagation();
+
+  if (abandonedHomeworks.includes(String(hw.id))) {
+
+    abandonedHomeworks =
+      abandonedHomeworks.filter(
+        id => id !== String(hw.id)
+      );
+
+  } else {
+
+    abandonedHomeworks.push(
+      String(hw.id)
+    );
+
+  }
+
+  localStorage.setItem(
+    'tnuaAbandonedHomeworks',
+    JSON.stringify(abandonedHomeworks)
+  );
+
+  render();
+
+});
+
+card.innerHTML = '';
+
+card.appendChild(homeworkLink);
+card.appendChild(abandonButton);
 
         section.appendChild(card);
 
