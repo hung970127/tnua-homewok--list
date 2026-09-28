@@ -265,29 +265,24 @@
       background: #e7e7e4;
     }
 
-    .homework-item {
-  position: relative;
-}
+   .calendar-tooltip {
+  position: fixed;
+  z-index: 999999;
 
-.homework-item:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 8px);
-  z-index: 9999;
+  display: none;
 
-  white-space: pre-line;
-  width: max-content;
   max-width: 280px;
-
   padding: 10px 12px;
-  border-radius: 9px;
 
   background: #222;
   color: white;
 
+  border-radius: 9px;
+
   font-size: 12px;
   line-height: 1.6;
+
+  white-space: pre-line;
   box-shadow: 0 6px 20px rgba(0,0,0,.15);
 
   pointer-events: none;
@@ -781,6 +776,64 @@
   `${hw.course}｜${hw.name}\n截止時間：${hw.deadline || '未設定'}\n狀態：${hw.submitted ? '已繳交' : '未繳交'}`
 );
 
+      item.addEventListener('mouseenter', () => {
+
+  const tooltip = document.createElement('div');
+
+  tooltip.className = 'calendar-tooltip';
+
+  tooltip.textContent =
+    item.getAttribute('data-tooltip');
+
+  document.body.appendChild(tooltip);
+
+  const rect =
+    item.getBoundingClientRect();
+
+  tooltip.style.display = 'block';
+
+  const tooltipRect =
+    tooltip.getBoundingClientRect();
+
+  let left =
+    rect.left +
+    rect.width / 2;
+
+  let top =
+    rect.top -
+    tooltipRect.height -
+    8;
+
+  if (top < 8) {
+    top =
+      rect.bottom + 8;
+  }
+
+  tooltip.style.left =
+    `${left}px`;
+
+  tooltip.style.top =
+    `${top}px`;
+
+  tooltip.style.transform =
+    'translateX(-50%)';
+
+  item._calendarTooltip =
+    tooltip;
+
+});
+
+item.addEventListener('mouseleave', () => {
+
+  if (item._calendarTooltip) {
+
+    item._calendarTooltip.remove();
+
+    item._calendarTooltip = null;
+
+  }
+
+});
 
       cell.appendChild(item);
 
