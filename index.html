@@ -868,13 +868,58 @@ let calendarDate = new Date();
 function parseDate(text, year = new Date().getFullYear()) {
   if (!text) return null;
 
-  const [md, time] = text.split(' ');
-  if (!md || !time) return null;
+  const parts = text.trim().split(/\s+/);
 
-  const [month, day] = md.split('-').map(Number);
-  const [hour, minute] = time.split(':').map(Number);
+  if (parts.length < 2) return null;
 
-  return new Date(year, month - 1, day, hour, minute);
+  const datePart = parts[0];
+  const timePart = parts[1];
+
+  const timeMatch = timePart.match(/^(\d{1,2}):(\d{2})/);
+
+  if (!timeMatch) return null;
+
+  const hour = Number(timeMatch[1]);
+  const minute = Number(timeMatch[2]);
+
+  // 完整日期：2027-01-15
+  const fullDateMatch =
+    datePart.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+
+  if (fullDateMatch) {
+
+    const fullYear = Number(fullDateMatch[1]);
+    const month = Number(fullDateMatch[2]);
+    const day = Number(fullDateMatch[3]);
+
+    return new Date(
+      fullYear,
+      month - 1,
+      day,
+      hour,
+      minute
+    );
+  }
+
+  // 原本格式：01-15
+  const shortDateMatch =
+    datePart.match(/^(\d{1,2})-(\d{1,2})$/);
+
+  if (shortDateMatch) {
+
+    const month = Number(shortDateMatch[1]);
+    const day = Number(shortDateMatch[2]);
+
+    return new Date(
+      year,
+      month - 1,
+      day,
+      hour,
+      minute
+    );
+  }
+
+  return null;
 }
 
 function getStatus(hw) {
