@@ -228,10 +228,10 @@ html {
 }
 
 .filters {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   gap: 8px;
   margin-top: 24px;
-  flex-wrap: wrap;
 }
 
 .filter {
@@ -243,6 +243,7 @@ html {
   font-family: inherit;
   font-size: 13px;
   cursor: pointer;
+    white-space: nowrap;
 }
 
 .filter:hover {
@@ -378,12 +379,12 @@ html {
     已完成
   </button>
 
-</div>
-
 <button class="filter" data-filter="abandoned">
   老子不做了
 </button>
-      
+  
+</div>
+
       <div class="month-filters">
 
   <button class="month-filter" data-month="9">
