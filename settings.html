@@ -156,31 +156,39 @@
       opacity: 0.8;
     }
 
-    .tutorial-images {
+.tutorial-images {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  margin-top: 18px;
+  max-width: 600px;
+  margin: 20px auto 0;
 }
 
 .tutorial-images img {
   width: 100%;
+  height: auto;
   display: block;
   border-radius: 12px;
   border: 1px solid #e8e8e5;
 }
 
-    @media (max-width: 600px) {
+  @media (max-width: 600px) {
 
-      .container {
-        width: calc(100% - 28px);
-        padding-top: 40px;
-      }
+  .container {
+    width: calc(100% - 28px);
+    padding-top: 40px;
+  }
 
-      h1 {
-        font-size: 29px;
-      }
+  h1 {
+    font-size: 29px;
+  }
 
-    }
+  .tutorial-images {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+  }
+
+}
 
   </style>
 
