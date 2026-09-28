@@ -743,12 +743,22 @@ color: white;
 @media (max-width: 600px) {
 
   .week-calendar {
-    min-width: 700px;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
   }
 
   #week-calendar {
-    overflow-x: auto;
+    overflow-x: hidden;
   }
+
+  .week-homework {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 5px 3px;
+  font-size: 10px;
+}
 
   .week-day {
     min-height: 130px;
