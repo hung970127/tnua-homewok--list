@@ -197,9 +197,12 @@ border-radius: 100px;
     margin-bottom: 32px;
   }
 
-  .header-top {
-    display: block;
-  }
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+}
 
   h1 {
     font-size: 29px;
@@ -757,9 +760,16 @@ color: white;
 
   <div class="header-top">
 
-    <h1>TNUA Hub</h1>
+  <h1>TNUA Hub</h1>
 
-  </div>
+  <button
+    id="firstUseButton"
+    class="first-use-button"
+  >
+    第一次使用
+  </button>
+
+</div>
 
   <nav class="navigation">
 
@@ -780,16 +790,6 @@ color: white;
     </a>
 
   </nav>
-
- <div class="subtitle">
-
-  <button
-    id="firstUseButton"
-    class="first-use-button"
-  >
-    第一次使用
-  </button>
-</div>
       
 <div class="home-section">
 
