@@ -280,22 +280,17 @@ html {
   border-color: #c0392b;
 }
 
-.month-filter {
-  width: 58px;
-  flex: 0 0 58px;
-  padding: 7px 0;
-  border: 1px solid #d8d8d3;
-  border-radius: 999px;
-  background: #f1f1ef;
-  color: #555;
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-  text-align: center;
+.month-filters {
+  display: grid;
+  grid-template-columns: repeat(12, 58px);
+  gap: 8px;
+  margin-top: 28px;
 }
+
 .month-filter {
   width: 58px;
-  padding: 7px 0;
+  height: 32px;
+  padding: 0;
   border: 1px solid #d8d8d3;
   border-radius: 999px;
   background: #f1f1ef;
