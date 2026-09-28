@@ -203,7 +203,7 @@
       padding: 10px;
       border-right: 1px solid #eeeeeb;
       border-bottom: 1px solid #eeeeeb;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .day:nth-child(7n) {
@@ -263,6 +263,34 @@
     .homework-item:hover {
       background: #e7e7e4;
     }
+
+    .homework-item {
+  position: relative;
+}
+
+.homework-item:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 9999;
+
+  white-space: pre-line;
+  width: max-content;
+  max-width: 280px;
+
+  padding: 10px 12px;
+  border-radius: 9px;
+
+  background: #222;
+  color: white;
+
+  font-size: 12px;
+  line-height: 1.6;
+  box-shadow: 0 6px 20px rgba(0,0,0,.15);
+
+  pointer-events: none;
+}
 
     .homework-time {
       color: #999;
@@ -747,8 +775,10 @@
 `;
 
 
-     item.title =
-  `${hw.course}｜${hw.name}\n截止時間：${hw.deadline || '未設定'}\n狀態：${hw.submitted ? '已繳交' : '未繳交'}`;
+     item.setAttribute(
+  'data-tooltip',
+  `${hw.course}｜${hw.name}\n截止時間：${hw.deadline || '未設定'}\n狀態：${hw.submitted ? '已繳交' : '未繳交'}`
+);
 
 
       cell.appendChild(item);
