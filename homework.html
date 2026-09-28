@@ -281,10 +281,10 @@ html {
 }
 
   .month-filters {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+  display: flex;
+  gap: 8px;
   margin-top: 28px;
+  flex-wrap: wrap;
 }
 
 .month-filter {
@@ -296,7 +296,6 @@ html {
   font-family: inherit;
   font-size: 13px;
   cursor: pointer;
-    justify-self: start;
 }
     
 .month-filter:hover {
