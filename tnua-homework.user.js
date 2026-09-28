@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TNUA Homework List Sync
 // @namespace    https://hung970127.github.io/tnua-homewok--list/
-// @version      2.0.0
+// @version      2.1.0
 // @description  在北藝大新藝學園自動同步作業至 TNUA Homework List
 // @author       TNUA Homework List
 // @match        https://eclass.tnua.edu.tw/*
@@ -9,6 +9,7 @@
 // ==/UserScript==
 
 (() => {
+
   if (document.getElementById('tnuaHomeworkSyncBox')) return;
 
   const HOMEWORK_LIST_URL =
@@ -66,176 +67,342 @@
 
   document.body.appendChild(box);
 
-  const button = document.getElementById('tnuaSyncButton');
-  const status = document.getElementById('tnuaSyncStatus');
+  const button =
+    document.getElementById('tnuaSyncButton');
 
-  button.addEventListener('click', async () => {
+  const status =
+    document.getElementById('tnuaSyncStatus');
 
-    button.disabled = true;
-    button.textContent = '同步中…';
-    button.style.opacity = '0.6';
 
-    status.textContent = '正在讀取課程與作業…';
+  /*
+   * 判斷作業年份
+   *
+   * 支援：
+   * 2027-01-15
+   * 2027/01/15
+   * 01-15
+   * 01/15
+   */
+  function getYearFromDateText(text) {
 
-    try {
+    if (!text) {
+      return new Date().getFullYear();
+    }
 
-      const courses = [...document.querySelectorAll('a[href*="/course/"]')]
-        .map(a => {
+    const value = text.trim();
 
-          const match =
-            a.getAttribute('href')?.match(/\/course\/(\d+)/);
+    /*
+     * 完整年份：
+     * 2027-01-15
+     * 2027/01/15
+     */
+    const fullMatch =
+      value.match(
+        /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/
+      );
 
-          if (!match) return null;
+    if (fullMatch) {
+      return Number(fullMatch[1]);
+    }
 
-          return {
-            id: match[1],
-            name: a.textContent.trim()
-          };
 
-        })
-        .filter(Boolean);
+    /*
+     * 只有月日：
+     * 01-15
+     * 01/15
+     */
+    const shortMatch =
+      value.match(
+        /^(\d{1,2})[-/](\d{1,2})/
+      );
 
-      const uniqueCourses = [
-        ...new Map(
-          courses.map(course => [course.id, course])
-        ).values()
-      ];
+    if (shortMatch) {
 
-      const homeworks = [];
+      const month =
+        Number(shortMatch[1]);
 
-      for (const course of uniqueCourses) {
+      const currentDate =
+        new Date();
 
-        try {
+      const currentMonth =
+        currentDate.getMonth() + 1;
 
-          const response = await fetch(
-            `/course/homeworkList/${course.id}`
-          );
+      const currentYear =
+        currentDate.getFullYear();
 
-          const html = await response.text();
 
-          const doc =
-            new DOMParser().parseFromString(
-              html,
-              'text/html'
-            );
+      /*
+       * 例如現在是 2026 年 9 月：
 
-          const rows =
-            doc.querySelectorAll(
-              '#homeworkListTable tbody tr'
-            );
+       * 09-30 → 2026
+       * 12-20 → 2026
+       * 01-15 → 2027
+       * 02-20 → 2027
+       * 03-10 → 2027
+       */
+      if (
+        currentMonth >= 7 &&
+        month <= 3
+      ) {
+        return currentYear + 1;
+      }
 
-          rows.forEach(row => {
+      return currentYear;
+    }
 
-            const link =
-              row.querySelector(
-                'a[href*="/course/homework/"]'
-              );
 
-            if (!link) return;
+    return new Date().getFullYear();
+  }
 
-            const cells =
-              row.querySelectorAll('td');
+
+  button.addEventListener(
+    'click',
+    async () => {
+
+      button.disabled = true;
+      button.textContent = '同步中…';
+      button.style.opacity = '0.6';
+
+      status.textContent =
+        '正在讀取課程與作業…';
+
+
+      try {
+
+        const courses =
+          [...document.querySelectorAll(
+            'a[href*="/course/"]'
+          )]
+          .map(a => {
 
             const match =
-              link
+              a
                 .getAttribute('href')
                 ?.match(
-                  /\/course\/homework\/(\d+)/
+                  /\/course\/(\d+)/
                 );
 
-            if (!match) return;
+            if (!match) return null;
 
-            const submitted =
-              !!row.querySelector('.fa-check') ||
-              row.textContent.includes('已繳交');
-
-            homeworks.push({
-
+            return {
               id: match[1],
+              name: a.textContent.trim()
+            };
 
-              course: course.name,
+          })
+          .filter(Boolean);
 
-              name: link.textContent.trim(),
 
-              open:
-                cells[4]?.textContent.trim() || '',
+        const uniqueCourses = [
+          ...new Map(
+            courses.map(
+              course => [
+                course.id,
+                course
+              ]
+            )
+          ).values()
+        ];
 
-              deadline:
-                cells[5]?.textContent.trim() || '',
 
-              year:
-                new Date().getFullYear(),
+        const homeworks = [];
 
-              submitted,
 
-              url:
-                `https://eclass.tnua.edu.tw/course/homework/${match[1]}`
+        for (
+          const course of uniqueCourses
+        ) {
+
+          try {
+
+            const response =
+              await fetch(
+                `/course/homeworkList/${course.id}`
+              );
+
+
+            const html =
+              await response.text();
+
+
+            const doc =
+              new DOMParser()
+                .parseFromString(
+                  html,
+                  'text/html'
+                );
+
+
+            const rows =
+              doc.querySelectorAll(
+                '#homeworkListTable tbody tr'
+              );
+
+
+            rows.forEach(row => {
+
+              const link =
+                row.querySelector(
+                  'a[href*="/course/homework/"]'
+                );
+
+              if (!link) return;
+
+
+              const cells =
+                row.querySelectorAll('td');
+
+
+              const match =
+                link
+                  .getAttribute('href')
+                  ?.match(
+                    /\/course\/homework\/(\d+)/
+                  );
+
+
+              if (!match) return;
+
+
+              const submitted =
+                !!row.querySelector(
+                  '.fa-check'
+                ) ||
+                row.textContent.includes(
+                  '已繳交'
+                );
+
+
+              const open =
+                cells[4]
+                  ?.textContent
+                  .trim() || '';
+
+
+              const deadline =
+                cells[5]
+                  ?.textContent
+                  .trim() || '';
+
+
+              /*
+               * 取得截止日期的年份
+               */
+              const year =
+                getYearFromDateText(
+                  deadline
+                );
+
+
+              homeworks.push({
+
+                id:
+                  match[1],
+
+                course:
+                  course.name,
+
+                name:
+                  link.textContent.trim(),
+
+                open:
+                  open,
+
+                deadline:
+                  deadline,
+
+                year:
+                  year,
+
+                submitted:
+                  submitted,
+
+                url:
+                  `https://eclass.tnua.edu.tw/course/homework/${match[1]}`
+              });
+
             });
 
-          });
 
-        } catch (error) {
+          } catch (error) {
 
-          console.error(
-            `讀取 ${course.name} 失敗：`,
-            error
-          );
+            console.error(
+              `讀取 ${course.name} 失敗：`,
+              error
+            );
+
+          }
 
         }
 
+
+        status.textContent =
+          `已讀取 ${homeworks.length} 個作業，正在返回 TNUA Hub…`;
+
+
+        /*
+         * 將資料轉成 JSON
+         */
+        const json =
+          JSON.stringify({
+            type:
+              'TNUA_HOMEWORK_SYNC',
+
+            homeworks:
+              homeworks,
+
+            time:
+              Date.now()
+          });
+
+
+        /*
+         * Unicode → Base64
+         */
+        const encoded =
+          btoa(
+            unescape(
+              encodeURIComponent(json)
+            )
+          );
+
+
+        /*
+         * 將資料放進 TNUA Hub URL #
+         */
+        const returnUrl =
+          HOMEWORK_LIST_URL +
+          '#sync=' +
+          encodeURIComponent(
+            encoded
+          );
+
+
+        /*
+         * 返回 TNUA Hub
+         */
+        window.location.href =
+          returnUrl;
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+          '同步失敗，請再試一次';
+
+        button.disabled =
+          false;
+
+        button.style.opacity =
+          '1';
+
+        button.textContent =
+          '重新同步';
+
       }
 
-      status.textContent =
-        `已讀取 ${homeworks.length} 個作業，正在返回 TNUA Hub…`;
-
-      /*
-       * 將資料轉成 JSON
-       */
-      const json =
-        JSON.stringify({
-          type: 'TNUA_HOMEWORK_SYNC',
-          homeworks,
-          time: Date.now()
-        });
-
-      /*
-       * Unicode → Base64
-       */
-      const encoded =
-        btoa(
-          unescape(
-            encodeURIComponent(json)
-          )
-        );
-
-      /*
-       * 將資料放進 Homework List 的 URL #
-       */
-      const returnUrl =
-        HOMEWORK_LIST_URL +
-        '#sync=' +
-        encodeURIComponent(encoded);
-
-      /*
-       * 自動回到 Homework List
-       */
-      window.location.href = returnUrl;
-
-    } catch (error) {
-
-      console.error(error);
-
-      status.textContent =
-        '同步失敗，請再試一次';
-
-      button.disabled = false;
-
-      button.style.opacity = '1';
-
-      button.textContent =
-        '重新同步';
     }
-
-  });
+  );
 
 })();
