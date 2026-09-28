@@ -171,17 +171,20 @@ html {
 .abandon-button {
   margin-top: 14px;
   padding: 7px 12px;
-  border: 1px solid #e4e4e1;
+  border: 1px solid #e8b8b3;
   border-radius: 8px;
-  background: #f7f7f5;
-  color: #777;
+  background: white;
+  color: #c0392b;
   font-family: inherit;
   font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .abandon-button:hover {
-  background: #eeeeeb;
+  background: #c0392b;
+  color: white;
+  border-color: #c0392b;
 }
     
 .course {
@@ -254,6 +257,21 @@ html {
   background: #1f1f1f;
   color: white;
   border-color: #1f1f1f;
+}
+
+    .filter[data-filter="abandoned"] {
+  color: #c0392b;
+  border-color: #e8b8b3;
+}
+
+.filter[data-filter="abandoned"]:hover {
+  background: #fff1f0;
+}
+
+.filter[data-filter="abandoned"].active {
+  background: #c0392b;
+  color: white;
+  border-color: #c0392b;
 }
 
   .month-filters {
