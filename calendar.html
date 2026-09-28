@@ -747,8 +747,8 @@
 `;
 
 
-      item.title =
-        `${hw.course}｜${hw.name}`;
+     item.title =
+  `${hw.course}｜${hw.name}\n截止時間：${hw.deadline || '未設定'}\n狀態：${hw.submitted ? '已繳交' : '未繳交'}`;
 
 
       cell.appendChild(item);
